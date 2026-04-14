@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>DhobiWala — Vendor Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--navy:#0c1a2e;--gold:#fbbf24;--green:#22c55e;--red:#ef4444;--slate:#64748b;--light:#f1f5f9;--white:#fff;--orange:#f97316}
+body{font-family:'DM Sans',sans-serif;background:var(--light);max-width:480px;margin:0 auto;min-height:100vh}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex!important}
+/* AUTH */
+#auth{background:#fff;padding:0}
+.auth-inner{padding:32px 24px}
+.logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:900;color:var(--navy);margin-bottom:4px}
+.logo span{color:var(--gold)}
+.sub{color:var(--slate);font-size:0.85rem;margin-bottom:28px}
+.form-group{margin-bottom:16px}
+label{display:block;font-size:0.72rem;font-weight:700;color:var(--slate);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em}
+input{width:100%;padding:13px 16px;border:2px solid #e2e8f0;border-radius:12px;font-size:0.92rem;font-family:'DM Sans',sans-serif;outline:none;color:var(--navy)}
+input:focus{border-color:var(--gold)}
+.btn{width:100%;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:12px;font-size:0.92rem;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:6px}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.green{background:var(--green);color:#fff}
+.btn.red{background:var(--red);color:#fff}
+.tabs{display:flex;background:var(--light);border-radius:10px;padding:3px;margin-bottom:22px}
+.tab{flex:1;padding:9px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.82rem;color:var(--slate);border-radius:8px;cursor:pointer}
+.tab.active{background:#fff;color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.ascreen{display:none}
+.ascreen.active{display:block}
+.msg{padding:10px 14px;border-radius:10px;font-size:0.82rem;margin-bottom:12px;display:none}
+.msg.error{background:#fee2e2;color:#dc2626;display:block}
+/* DASHBOARD */
+#dashboard{background:var(--light)}
+.dash-header{background:var(--navy);padding:18px 20px 24px}
+.dash-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.dash-logo{font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff;font-weight:900}
+.dash-logo span{color:var(--gold)}
+.dash-shop{color:rgba(255,255,255,0.7);font-size:0.82rem;margin-bottom:4px}
+.dash-name{color:#fff;font-size:1.1rem;font-weight:700}
+.notif-badge{background:var(--red);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 16px}
+.stat-box{background:#fff;border-radius:14px;padding:14px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.06)}
+.stat-val{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--navy)}
+.stat-lbl{font-size:0.68rem;color:var(--slate);margin-top:2px}
+.section-title{font-weight:700;color:var(--navy);padding:4px 16px 10px;font-size:0.95rem}
+/* ORDER CARDS */
+.orders-list{padding:0 16px;display:flex;flex-direction:column;gap:12px;padding-bottom:90px}
+.order-card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.order-card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.order-num{font-size:0.72rem;color:var(--slate)}
+.order-cust{font-weight:700;color:var(--navy);font-size:0.95rem;margin-bottom:2px}
+.order-items-text{font-size:0.8rem;color:var(--slate);margin-bottom:4px}
+.order-addr{font-size:0.75rem;color:var(--slate);margin-bottom:10px}
+.order-slot{font-size:0.75rem;font-weight:600;color:var(--navy);background:var(--light);border-radius:6px;padding:3px 10px;display:inline-block;margin-bottom:10px}
+.status-badge{border-radius:8px;padding:3px 10px;font-size:0.7rem;font-weight:700}
+.s-pending{background:#fef3c7;color:#d97706}
+.s-accepted{background:#dcfce7;color:#15803d}
+.s-rejected{background:#fee2e2;color:#dc2626}
+.s-ironing{background:#dbeafe;color:#1d4ed8}
+.s-delivered{background:#f0fdf4;color:#15803d}
+.action-row{display:flex;gap:8px}
+.action-btn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;cursor:pointer}
+.accept-btn{background:var(--green);color:#fff}
+.reject-btn{background:#fee2e2;color:var(--red)}
+.update-btn{background:var(--navy);color:#fff}
+.order-amt{font-weight:700;color:var(--navy);font-size:1rem}
+.order-time{font-size:0.72rem;color:var(--slate)}
+/* STATUS UPDATE MODAL */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px 20px 0 0;padding:24px 20px;width:100%;max-width:480px}
+.modal-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--navy);margin-bottom:16px}
+.status-options{display:flex;flex-direction:column;gap:8px}
+.status-option{padding:12px 16px;border:2px solid #e2e8f0;border-radius:12px;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:10px}
+.status-option:active{background:var(--light)}
+/* REJECT MODAL */
+.reject-reason{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;height:80px;resize:none;margin-bottom:12px}
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-top:1px solid #f1f5f9;display:flex;padding:8px 0 12px;z-index:10}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.nav-icon{font-size:1.3rem}
+.nav-label{font-size:0.62rem;font-weight:600;color:var(--slate)}
+.nav-item.active .nav-label{color:var(--navy)}
+/* ONLINE TOGGLE */
+.online-toggle{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.1);border-radius:20px;padding:6px 14px;cursor:pointer}
+.toggle-dot{width:12px;height:12px;border-radius:50%;background:#ef4444;transition:background 0.3s}
+.toggle-dot.on{background:var(--green)}
+.toggle-text{color:#fff;font-size:0.78rem;font-weight:600}
+
+/* ORDER TIMER */
+.order-timer{background:#fff9ec;border:1.5px solid #fde68a;border-radius:10px;padding:10px 14px;margin-bottom:10px}
+.ot-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ot-label{font-size:0.75rem;font-weight:700;color:#d97706}
+.ot-count{font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:#d97706;min-width:44px;text-align:right}
+.ot-count.urgent{color:var(--red)}
+.ot-track{height:4px;background:#fde68a;border-radius:2px;overflow:hidden}
+.ot-fill{height:100%;background:#f59e0b;border-radius:2px;transition:width 1s linear}
+.ot-fill.urgent{background:var(--red)}
+.ot-sub{font-size:0.68rem;color:#d97706;margin-top:5px}
+
+/* PENALTY */
+.penalty-banner{background:#fee2e2;border:1.5px solid #fecaca;border-radius:12px;padding:14px 16px;margin:0 16px 12px;display:none}
+.penalty-banner.show{display:block}
+.pb-title{font-weight:700;color:#dc2626;font-size:0.88rem;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.pb-sub{font-size:0.75rem;color:#ef4444;line-height:1.5}
+.pb-strikes{display:flex;gap:6px;margin-top:8px}
+.strike{width:28px;height:28px;border-radius:50%;background:#fecaca;border:2px solid #f87171;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;color:#dc2626}
+.strike.filled{background:#dc2626;color:#fff;border-color:#dc2626}
+/* SHOP STATUS TOGGLE */
+.shop-status-card{background:var(--white);border-radius:14px;margin:0 16px 12px;padding:16px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.ssc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.ssc-title{font-weight:700;color:var(--navy);font-size:0.92rem}
+.toggle-switch{width:52px;height:28px;border-radius:14px;background:#e2e8f0;cursor:pointer;position:relative;transition:background 0.3s;border:none;flex-shrink:0}
+.toggle-switch.on{background:var(--green)}
+.toggle-thumb{width:22px;height:22px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
+.toggle-switch.on .toggle-thumb{left:27px}
+.hours-row{display:flex;gap:10px;align-items:center}
+.hours-label{font-size:0.75rem;color:var(--slate);font-weight:600;min-width:60px}
+.hours-input{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.85rem;color:var(--navy);background:#fff;flex:1}
+.hours-input:focus{outline:none;border-color:var(--gold)}
+.save-hours-btn{padding:8px 16px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.8rem;cursor:pointer}
+.status-indicator{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.si-dot{width:10px;height:10px;border-radius:50%;background:#e2e8f0;flex-shrink:0;transition:background 0.3s}
+.si-dot.open{background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
+.si-text{font-size:0.8rem;color:var(--slate);font-weight:600}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div class="screen active" id="auth">
+  <div class="auth-inner">
+    <div class="logo">🧺 Dhobi<span>Wala</span></div>
+    <div class="sub">Vendor Portal — Rourkela</div>
+    <div class="tabs">
+      <button class="tab active" onclick="authSwitch('login')">Login</button>
+      <button class="tab" onclick="authSwitch('signup')">Register Shop</button>
+    </div>
+    <div id="authMsg" class="msg"></div>
+
+    <div class="ascreen active" id="loginForm">
+      <div class="form-group"><label>Phone Number</label><input type="tel" id="loginPhone" placeholder="98765 43210" maxlength="10"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="loginPass" placeholder="Your password"/></div>
+      <button class="btn" onclick="doLogin()">Login to Dashboard →</button>
+      <p style="text-align:center;color:var(--slate);font-size:0.82rem;margin-top:14px">New vendor? <a onclick="authSwitch('signup')" style="color:var(--gold);font-weight:700;cursor:pointer">Register shop</a></p>
+    </div>
+
+    <div class="ascreen" id="signupForm">
+      <div class="form-group"><label>Shop Name</label><input type="text" id="shopName" placeholder="e.g. Civil Iron Palace"/></div>
+      <div class="form-group"><label>Owner Name</label><input type="text" id="ownerName" placeholder="Your full name"/></div>
+      <div class="form-group"><label>Phone Number</label><input type="tel" id="signupPhone" placeholder="98765 43210" maxlength="10"/></div>
+      <div class="form-group"><label>Area</label><input type="text" id="shopArea" placeholder="e.g. Civil Township, Sector 6"/></div>
+      <div class="form-group"><label>Password</label><input type="password" id="signupPass" placeholder="Create password"/></div>
+      <button class="btn gold" onclick="doSignup()">Register My Shop →</button>
+      <p style="text-align:center;color:var(--slate);font-size:0.82rem;margin-top:14px">Already registered? <a onclick="authSwitch('login')" style="color:var(--gold);font-weight:700;cursor:pointer">Login</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="screen" id="dashboard">
+  <div class="dash-header">
+    <div class="dash-top">
+      <div>
+        <div class="dash-logo">🧺 Dhobi<span>Wala</span></div>
+        <div class="dash-shop">Vendor Dashboard</div>
+        <div class="dash-name" id="dashShopName">Civil Iron Palace</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px">
+        <div class="notif-badge" id="pendingBadge">0</div>
+<div style="font-size:1.4rem" id="headerStatusIco">🟢</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-val" id="statPending">0</div><div class="stat-lbl">Pending</div></div>
+    <div class="stat-box"><div class="stat-val" id="statToday">0</div><div class="stat-lbl">Today</div></div>
+    <div class="stat-box"><div class="stat-val" id="statEarnings">₹0</div><div class="stat-lbl">Earnings</div></div>
+  </div>
+
+  <!-- SHOP STATUS CARD -->
+  <div class="shop-status-card" id="shopStatusCard">
+    <div class="ssc-top">
+      <div class="ssc-title">🏪 Shop Status</div>
+      <button class="toggle-switch on" id="shopToggle" onclick="toggleShopStatus()">
+        <div class="toggle-thumb"></div>
+      </button>
+    </div>
+    <div class="status-indicator">
+      <div class="si-dot open" id="siDot"></div>
+      <div class="si-text" id="siText">Your shop is OPEN — accepting orders</div>
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+      <div style="font-size:0.72rem;font-weight:700;color:var(--slate);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px">Shop Hours</div>
+      <div class="hours-row">
+        <div class="hours-label">Opens at</div>
+        <input class="hours-input" type="time" id="openTime" value="08:00"/>
+        <div class="hours-label" style="min-width:auto">Closes</div>
+        <input class="hours-input" type="time" id="closeTime" value="21:00"/>
+        <button class="save-hours-btn" onclick="saveHours()">Save</button>
+      </div>
+      <div id="hoursConfirm" style="font-size:0.72rem;color:var(--green);margin-top:6px;display:none">✅ Hours saved!</div>
+    </div>
+  </div>
+
+  <!-- PENALTY BANNER -->
+  <div class="penalty-banner" id="penaltyBanner">
+    <div class="pb-title">⚠️ Penalty Warning</div>
+    <div class="pb-sub" id="penaltyText">You have missed orders while your shop was marked OPEN. 3 misses = shop suspended for 24 hours.</div>
+    <div class="pb-strikes" id="strikeRow"></div>
+  </div>
+
+  <!-- QUICK SUPPORT -->
+  <div style="background:#fff;border-radius:14px;margin:0 16px 12px;padding:14px 16px;border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font-weight:700;color:var(--navy);font-size:0.88rem;margin-bottom:2px">Vendor Support</div>
+      <div style="font-size:0.72rem;color:var(--slate)">📞 +91 82491 13073 · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3c5d6ddd7dcc1c0f3d7dbdcd1dac4d2dfd29ddadd">[email&#160;protected]</a></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <a href="tel:+918249113073" style="width:34px;height:34px;background:#dcfce7;border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1rem">📞</a>
+      <a href="https://wa.me/918249113073" target="_blank" style="width:34px;height:34px;background:#dcfce7;border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1rem">💬</a>
+      <a href="/cdn-cgi/l/email-protection#a3d5c6cdc7ccd1d0e3c7cbccc1cad4c2cfc28dcacd" style="width:34px;height:34px;background:#dbeafe;border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1rem">✉️</a>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div style="display:flex;gap:0;padding:0 16px;margin-bottom:12px">
+    <button onclick="filterOrders('pending_vendor')" id="ftab-pending" style="flex:1;padding:9px;border:none;border-bottom:3px solid var(--gold);font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.8rem;color:var(--navy);background:transparent;cursor:pointer">🔔 New Orders</button>
+    <button onclick="filterOrders('active')" id="ftab-active" style="flex:1;padding:9px;border:none;border-bottom:3px solid transparent;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.8rem;color:var(--slate);background:transparent;cursor:pointer">⚡ Active</button>
+    <button onclick="filterOrders('delivered')" id="ftab-done" style="flex:1;padding:9px;border:none;border-bottom:3px solid transparent;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.8rem;color:var(--slate);background:transparent;cursor:pointer">✅ Done</button>
+  </div>
+
+  <div class="orders-list" id="ordersList"></div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active"><div class="nav-icon">📋</div><div class="nav-label">Orders</div></div>
+    <div class="nav-item" onclick="window.open('https://dhobiwala-support.vercel.app?tab=vendor','_blank')"><div class="nav-icon">💬</div><div class="nav-label">Support</div></div>
+    <div class="nav-item" onclick="doLogout()"><div class="nav-icon">🚪</div><div class="nav-label">Logout</div></div>
+  </div>
+</div>
+
+<!-- STATUS UPDATE MODAL -->
+<div class="modal-overlay" id="statusModal">
+  <div class="modal">
+    <div class="modal-title">Update Order Status</div>
+    <div class="status-options">
+      <div class="status-option" onclick="updateStatus('pickup_scheduled')">🏍 Rider assigned — pickup scheduled</div>
+      <div class="status-option" onclick="updateStatus('picked_up')">📦 Clothes picked up by rider</div>
+      <div class="status-option" onclick="updateStatus('ironing')">♨️ Ironing in progress</div>
+      <div class="status-option" onclick="updateStatus('ready')">✅ Ironing done — ready for delivery</div>
+      <div class="status-option" onclick="updateStatus('out_for_delivery')">🚀 Out for delivery</div>
+      <div class="status-option" onclick="updateStatus('delivered')">🎉 Delivered to customer</div>
+    </div>
+    <button class="btn" style="margin-top:14px;background:var(--light);color:var(--navy)" onclick="closeModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- REJECT MODAL -->
+<div class="modal-overlay" id="rejectModal">
+  <div class="modal">
+    <div class="modal-title">Reason for Rejection</div>
+    <textarea class="reject-reason" id="rejectReason" placeholder="e.g. Shop is full today, please try tomorrow..."></textarea>
+    <button class="btn red" onclick="confirmReject()">Reject Order</button>
+    <button class="btn" style="margin-top:10px;background:var(--light);color:var(--navy)" onclick="closeRejectModal()">Cancel</button>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── SAMPLE ORDERS (replace with real API calls later) ──
+let ORDERS = [
+  { id:'DW001', num:'#DW102401', customer:'Ramesh Panda',    phone:'9876543210', items:'3 Shirts, 2 Trousers',     addr:'House 12, Sector 6, Civil Township', slot:'Morning 8-10 AM', amt:170, status:'pending_vendor', time:'Just now' },
+  { id:'DW002', num:'#DW102400', customer:'Priya Sahoo',     phone:'9876543211', items:'2 Sarees, 1 Kurta',        addr:'Flat 5B, Steel Township',            slot:'Noon 12-2 PM',    amt:180, status:'pending_vendor', time:'5 min ago' },
+  { id:'DW003', num:'#DW102398', customer:'Anil Mohapatra',  phone:'8249113072', items:'1 Suit, 3 Formal Shirts',  addr:'14 Civil Lines, Rourkela',           slot:'Evening 5-7 PM',  amt:260, status:'ironing',        time:'2 hrs ago' },
+  { id:'DW004', num:'#DW102390', customer:'Sunita Mishra',   phone:'9876543212', items:'4 Sarees',                 addr:'Sector 19, Civil Township',          slot:'Morning 8-10 AM', amt:180, status:'delivered',       time:'Yesterday' },
+];
+
+let currentFilter = 'pending_vendor';
+let currentOrderId = null;
+let isOnline = true;
+let vendorData = null;
+
+// ── AUTH ──
+function authSwitch(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', (tab==='login'&&i===0)||(tab==='signup'&&i===1)));
+  document.getElementById('loginForm').classList.toggle('active', tab==='login');
+  document.getElementById('signupForm').classList.toggle('active', tab==='signup');
+  document.getElementById('authMsg').className='msg';
+}
+
+function getVendors() { try { return JSON.parse(localStorage.getItem('dw_vendors')||'{}'); } catch(e){ return {}; } }
+function saveVendors(v) { localStorage.setItem('dw_vendors', JSON.stringify(v)); }
+function getVSession() { try { return JSON.parse(localStorage.getItem('dw_vsession')||'null'); } catch(e){ return null; } }
+function saveVSession(v) { localStorage.setItem('dw_vsession', JSON.stringify(v)); }
+
+function doLogin() {
+  const phone = document.getElementById('loginPhone').value.trim();
+  const pass  = document.getElementById('loginPass').value.trim();
+  const msg   = document.getElementById('authMsg');
+  if (!phone||!pass) { msg.className='msg error'; msg.textContent='Please enter phone and password'; return; }
+  const vendors = getVendors();
+  if (!vendors[phone]) { msg.className='msg error'; msg.textContent='No account found. Please register your shop.'; return; }
+  if (vendors[phone].password !== pass) { msg.className='msg error'; msg.textContent='Wrong password'; return; }
+  loginVendor(vendors[phone]);
+}
+
+function doSignup() {
+  const shopName = document.getElementById('shopName').value.trim();
+  const ownerName= document.getElementById('ownerName').value.trim();
+  const phone    = document.getElementById('signupPhone').value.trim();
+  const area     = document.getElementById('shopArea').value.trim();
+  const pass     = document.getElementById('signupPass').value.trim();
+  const msg      = document.getElementById('authMsg');
+  if (!shopName||!ownerName||!phone||!area||!pass) { msg.className='msg error'; msg.textContent='Please fill all fields'; return; }
+  if (phone.length!==10) { msg.className='msg error'; msg.textContent='Enter valid 10-digit phone'; return; }
+  const vendors = getVendors();
+  if (vendors[phone]) { msg.className='msg error'; msg.textContent='Account exists. Please login.'; return; }
+  const vendor = { shopName, ownerName, phone, area, password:pass, createdAt:new Date().toISOString() };
+  vendors[phone] = vendor;
+  saveVendors(vendors);
+  loginVendor(vendor);
+}
+
+function loginVendor(vendor) {
+  vendorData = vendor;
+  saveVSession(vendor);
+  document.getElementById('dashShopName').textContent = vendor.shopName;
+  renderOrders();
+  showScreen('dashboard');
+}
+
+function doLogout() { localStorage.removeItem('dw_vsession'); showScreen('auth'); }
+
+function checkVSession() {
+  const v = getVSession();
+  if (v) { loginVendor(v); return true; }
+  return false;
+}
+
+// ── DASHBOARD ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function toggleOnline() {
+  isOnline = !isOnline;
+  document.getElementById('toggleDot').className = 'toggle-dot' + (isOnline?' on':'');
+  document.getElementById('toggleText').textContent = isOnline ? 'OPEN' : 'CLOSED';
+}
+
+function filterOrders(type) {
+  currentFilter = type;
+  ['pending','active','done'].forEach(t => {
+    const btn = document.getElementById('ftab-'+t);
+    if (btn) { btn.style.borderBottomColor='transparent'; btn.style.color='var(--slate)'; btn.style.fontWeight='600'; }
+  });
+  const map = {'pending_vendor':'pending','active':'active','delivered':'done'};
+  const activeTab = document.getElementById('ftab-'+map[type]);
+  if (activeTab) { activeTab.style.borderBottomColor='var(--gold)'; activeTab.style.color='var(--navy)'; activeTab.style.fontWeight='700'; }
+  renderOrders();
+}
+
+function getFilteredOrders() {
+  if (currentFilter === 'pending_vendor') return ORDERS.filter(o => o.status === 'pending_vendor');
+  if (currentFilter === 'active') return ORDERS.filter(o => ['accepted','pickup_scheduled','picked_up','ironing','ready','out_for_delivery'].includes(o.status));
+  if (currentFilter === 'delivered') return ORDERS.filter(o => ['delivered','rejected'].includes(o.status));
+  return ORDERS;
+}
+
+function statusBadge(s) {
+  const map = {
+    pending_vendor: ['s-pending','⏳ Waiting'],
+    accepted:       ['s-accepted','✅ Accepted'],
+    pickup_scheduled:['s-accepted','🏍 Rider coming'],
+    picked_up:      ['s-accepted','📦 Picked up'],
+    ironing:        ['s-ironing','♨️ Ironing'],
+    ready:          ['s-accepted','✅ Ready'],
+    out_for_delivery:['s-accepted','🚀 Delivering'],
+    delivered:      ['s-delivered','🎉 Delivered'],
+    rejected:       ['s-rejected','❌ Rejected'],
+  };
+  const [cls, label] = map[s] || ['s-pending', s];
+  return `<div class="status-badge ${cls}">${label}</div>`;
+}
+
+function renderOrders() {
+  const filtered = getFilteredOrders();
+  const pending = ORDERS.filter(o => o.status==='pending_vendor').length;
+  const today   = ORDERS.filter(o => ['accepted','pickup_scheduled','picked_up','ironing','ready','out_for_delivery','delivered'].includes(o.status)).length;
+  const earnings = ORDERS.filter(o=>o.status==='delivered').reduce((s,o)=>s+o.amt,0);
+  document.getElementById('statPending').textContent = pending;
+  document.getElementById('statToday').textContent   = today;
+  document.getElementById('statEarnings').textContent= '₹'+earnings;
+  document.getElementById('pendingBadge').textContent= pending;
+
+  if (filtered.length === 0) {
+    document.getElementById('ordersList').innerHTML = `
+      <div style="text-align:center;padding:40px 20px;color:var(--slate)">
+        <div style="font-size:3rem;margin-bottom:12px">${currentFilter==='pending_vendor'?'🎉':'📭'}</div>
+        <div style="font-weight:700;color:var(--navy);margin-bottom:6px">${currentFilter==='pending_vendor'?'No new orders right now':'No orders here'}</div>
+        <div style="font-size:0.82rem">${currentFilter==='pending_vendor'?'New orders will appear here instantly':'Check other tabs'}</div>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('ordersList').innerHTML = filtered.map(o => `
+    <div class="order-card">
+      <div class="order-card-top">
+        <div>
+          <div class="order-num">${o.num} · ${o.time}</div>
+          <div class="order-cust">👤 ${o.customer}</div>
+          <div style="font-size:0.75rem;color:var(--slate)">📞 ${o.phone}</div>
+        </div>
+        ${statusBadge(o.status)}
+      </div>
+      ${o.status === 'pending_vendor' ? getTimerWidget(o.id) : ''}
+      <div class="order-items-text">🧺 ${o.items}</div>
+      <div class="order-addr">📍 ${o.addr}</div>
+      <div class="order-slot">⏰ Pickup: ${o.slot}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:${o.status==='pending_vendor'||['accepted','pickup_scheduled','picked_up','ironing','ready'].includes(o.status)?'10px':'0'}">
+        <div class="order-amt">₹${o.amt}</div>
+        <div class="order-time">COD</div>
+      </div>
+      ${o.status === 'pending_vendor' ? `
+        <div class="action-row">
+          <button class="action-btn accept-btn" onclick="acceptOrder('${o.id}')">✅ Accept Order</button>
+          <button class="action-btn reject-btn" onclick="openRejectModal('${o.id}')">❌ Reject</button>
+        </div>` : ''}
+      ${['accepted','pickup_scheduled','picked_up','ironing','ready','out_for_delivery'].includes(o.status) ? `
+        <button class="action-btn update-btn" style="width:100%" onclick="openStatusModal('${o.id}')">📋 Update Status →</button>` : ''}
+    </div>`).join('');
+
+  // Start timers for pending orders after rendering
+  filtered.filter(o => o.status === 'pending_vendor').forEach(o => startVendorTimer(o.id));
+}
+
+function acceptOrder(id) {
+  const o = ORDERS.find(x=>x.id===id);
+  if (!o) return;
+  o.status = 'accepted';
+  o.time = 'Just now';
+  renderOrders();
+  // Show notification
+  showToast('✅ Order '+o.num+' accepted! Assigning rider...');
+  // Switch to active tab to show it
+  setTimeout(() => filterOrders('active'), 1200);
+}
+
+function openRejectModal(id) {
+  currentOrderId = id;
+  document.getElementById('rejectReason').value = '';
+  document.getElementById('rejectModal').classList.add('open');
+}
+function closeRejectModal() { document.getElementById('rejectModal').classList.remove('open'); }
+
+function confirmReject() {
+  const reason = document.getElementById('rejectReason').value.trim() || 'Shop unavailable';
+  const o = ORDERS.find(x=>x.id===currentOrderId);
+  if (!o) return;
+  // Stop timer
+  if (orderTimers[currentOrderId]) { clearInterval(orderTimers[currentOrderId].interval); delete orderTimers[currentOrderId]; }
+  o.status = 'rejected';
+  o.rejectionReason = reason;
+  closeRejectModal();
+  renderOrders();
+  showToast('Order '+o.num+' rejected.');
+}
+
+function openStatusModal(id) {
+  currentOrderId = id;
+  document.getElementById('statusModal').classList.add('open');
+}
+function closeModal() { document.getElementById('statusModal').classList.remove('open'); }
+
+function updateStatus(status) {
+  const o = ORDERS.find(x=>x.id===currentOrderId);
+  if (!o) return;
+  o.status = status;
+  closeModal();
+  renderOrders();
+  const labels = {
+    pickup_scheduled:'🏍 Rider assigned!',picked_up:'📦 Clothes picked up!',
+    ironing:'♨️ Ironing started',ready:'✅ Ready for delivery',
+    out_for_delivery:'🚀 Out for delivery',delivered:'🎉 Delivered!'
+  };
+  showToast(labels[status]||'Status updated');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 20px;border-radius:12px;font-size:0.85rem;font-weight:600;z-index:200;white-space:nowrap;max-width:90%;text-align:center';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity='0'; }, 2500);
+}
+
+
+
+// ── SHOP STATUS + PENALTY ──
+let shopOpen = true;
+let shopHours = { open: '08:00', close: '21:00' };
+let missedOrders = JSON.parse(localStorage.getItem('dw_v_misses') || '[]');
+const MAX_STRIKES = 3;
+
+function toggleShopStatus() {
+  shopOpen = !shopOpen;
+  const btn = document.getElementById('shopToggle');
+  const dot = document.getElementById('siDot');
+  const txt = document.getElementById('siText');
+  const ico = document.getElementById('headerStatusIco');
+  btn.classList.toggle('on', shopOpen);
+  dot.className = 'si-dot' + (shopOpen ? ' open' : '');
+  txt.textContent = shopOpen
+    ? 'Your shop is OPEN — accepting orders'
+    : 'Your shop is CLOSED — not accepting orders';
+  ico.textContent = shopOpen ? '🟢' : '🔴';
+  localStorage.setItem('dw_v_shopOpen', shopOpen ? '1' : '0');
+  showToast(shopOpen ? '🟢 Shop is now OPEN' : '🔴 Shop is now CLOSED');
+}
+
+function saveHours() {
+  shopHours.open  = document.getElementById('openTime').value;
+  shopHours.close = document.getElementById('closeTime').value;
+  localStorage.setItem('dw_v_hours', JSON.stringify(shopHours));
+  const c = document.getElementById('hoursConfirm');
+  c.style.display = 'block';
+  setTimeout(() => c.style.display = 'none', 2000);
+}
+
+function loadShopStatus() {
+  const saved = localStorage.getItem('dw_v_shopOpen');
+  if (saved === '0') { shopOpen = false; toggleShopStatus(); toggleShopStatus(); // ensure UI sync
+    shopOpen = false;
+    document.getElementById('shopToggle').classList.remove('on');
+    document.getElementById('siDot').className = 'si-dot';
+    document.getElementById('siText').textContent = 'Your shop is CLOSED — not accepting orders';
+    document.getElementById('headerStatusIco').textContent = '🔴';
+  }
+  const savedH = localStorage.getItem('dw_v_hours');
+  if (savedH) {
+    shopHours = JSON.parse(savedH);
+    document.getElementById('openTime').value  = shopHours.open;
+    document.getElementById('closeTime').value = shopHours.close;
+  }
+  renderStrikes();
+}
+
+function addPenaltyStrike(orderId) {
+  // Only penalise if shop was OPEN when order expired
+  if (!shopOpen) return;
+  missedOrders.push({ id: orderId, at: new Date().toISOString() });
+  localStorage.setItem('dw_v_misses', JSON.stringify(missedOrders));
+  renderStrikes();
+
+  if (missedOrders.length >= MAX_STRIKES) {
+    suspendShop();
+  } else {
+    showToast('⚠️ Strike ' + missedOrders.length + '/' + MAX_STRIKES + ' — missed order penalty');
+  }
+}
+
+function suspendShop() {
+  shopOpen = false;
+  document.getElementById('shopToggle').classList.remove('on');
+  document.getElementById('siDot').className = 'si-dot';
+  document.getElementById('siText').textContent = '🚫 Shop SUSPENDED for 24 hours — too many missed orders';
+  document.getElementById('headerStatusIco').textContent = '🚫';
+  document.getElementById('shopToggle').onclick = null; // disable toggle
+  localStorage.setItem('dw_v_shopOpen','0');
+  localStorage.setItem('dw_v_suspended', Date.now().toString());
+  const banner = document.getElementById('penaltyBanner');
+  banner.classList.add('show');
+  document.getElementById('penaltyText').textContent =
+    '🚫 Your shop has been SUSPENDED for 24 hours due to 3 missed orders while open. It will automatically reopen tomorrow.';
+  showToast('🚫 Shop suspended for 24 hours!');
+}
+
+function renderStrikes() {
+  const count = Math.min(missedOrders.length, MAX_STRIKES);
+  const row = document.getElementById('strikeRow');
+  const banner = document.getElementById('penaltyBanner');
+  if (count === 0) { banner.classList.remove('show'); return; }
+  banner.classList.add('show');
+  if (count < MAX_STRIKES) {
+    document.getElementById('penaltyText').textContent =
+      'You have ' + count + ' strike' + (count>1?'s':'') + ' for missing orders while OPEN. ' +
+      (MAX_STRIKES - count) + ' more will suspend your shop for 24 hours.';
+  }
+  row.innerHTML = Array.from({length:MAX_STRIKES},(_,i)=>
+    `<div class="strike ${i < count ? 'filled' : ''}">${i < count ? '✕' : (i+1)}</div>`
+  ).join('');
+}
+
+// Check if suspended
+function checkSuspension() {
+  const ts = localStorage.getItem('dw_v_suspended');
+  if (!ts) return;
+  const elapsed = Date.now() - parseInt(ts);
+  const hours24 = 24 * 60 * 60 * 1000;
+  if (elapsed >= hours24) {
+    // Lift suspension
+    localStorage.removeItem('dw_v_suspended');
+    localStorage.removeItem('dw_v_misses');
+    localStorage.removeItem('dw_v_shopOpen');
+    missedOrders = [];
+    document.getElementById('shopToggle').onclick = toggleShopStatus;
+    showToast('✅ Suspension lifted. Shop is active again!');
+  }
+}
+
+// ── ORDER TIMERS ──
+const orderTimers = {}; // orderId -> {seconds, interval}
+const VENDOR_TIMER = 15 * 60; // 15 minutes
+
+function startVendorTimer(orderId) {
+  if (orderTimers[orderId]) return; // already running
+  orderTimers[orderId] = { seconds: VENDOR_TIMER };
+  orderTimers[orderId].interval = setInterval(() => {
+    orderTimers[orderId].seconds--;
+    updateTimerDisplay(orderId);
+    if (orderTimers[orderId].seconds <= 0) {
+      clearInterval(orderTimers[orderId].interval);
+      delete orderTimers[orderId];
+      autoExpireOrder(orderId);
+    }
+  }, 1000);
+  updateTimerDisplay(orderId);
+}
+
+function updateTimerDisplay(orderId) {
+  const el = document.getElementById('ot-' + orderId);
+  if (!el) return;
+  const secs = orderTimers[orderId] ? orderTimers[orderId].seconds : 0;
+  const mins = Math.floor(secs / 60);
+  const s = secs % 60;
+  const display = String(mins).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  const urgent = secs <= 120;
+  const pct = (secs / VENDOR_TIMER) * 100;
+  el.querySelector('.ot-count').textContent = display;
+  el.querySelector('.ot-count').className = 'ot-count' + (urgent ? ' urgent' : '');
+  el.querySelector('.ot-fill').style.width = pct + '%';
+  el.querySelector('.ot-fill').className = 'ot-fill' + (urgent ? ' urgent' : '');
+  if (urgent) el.querySelector('.ot-sub').textContent = '🚨 Expiring soon! Accept or order will cancel.';
+}
+
+function autoExpireOrder(orderId) {
+  const o = ORDERS.find(x => x.id === orderId);
+  if (!o || o.status !== 'pending_vendor') return;
+  o.status = 'rejected';
+  o.rejectionReason = 'Auto-cancelled: vendor did not respond within 15 minutes';
+  // Add penalty strike if shop was open
+  addPenaltyStrike(orderId);
+  renderOrders();
+  showToast('⏰ Order ' + o.num + ' auto-cancelled — vendor timeout');
+}
+
+function getTimerWidget(orderId) {
+  return `<div class="order-timer" id="ot-${orderId}">
+    <div class="ot-top">
+      <div class="ot-label">⏳ Time to accept</div>
+      <div class="ot-count">15:00</div>
+    </div>
+    <div class="ot-track"><div class="ot-fill" style="width:100%"></div></div>
+    <div class="ot-sub">Auto-cancels if not accepted in 15 min</div>
+  </div>`;
+}
+
+// Start timers for all pending orders on load
+function initTimers() {
+  ORDERS.filter(o => o.status === 'pending_vendor').forEach(o => startVendor
