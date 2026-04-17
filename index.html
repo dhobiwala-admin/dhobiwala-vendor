@@ -11,8 +11,6 @@
 body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;margin:0 auto;min-height:100vh}
 .page{display:none;min-height:100vh;flex-direction:column}
 .page.show{display:flex}
-
-/* ── AUTH ── */
 .auth-hero{background:var(--ink);padding:44px 24px 36px;position:relative;overflow:hidden}
 .auth-hero::after{content:'';position:absolute;bottom:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,160,32,0.07)}
 .wordmark{font-family:'Syne',sans-serif;font-weight:800;font-size:1.7rem;color:#fff;margin-bottom:4px}
@@ -32,32 +30,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
 .pass-wrap .finput{padding-right:48px}
 .eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;padding:4px}
 .err-box{background:#fff0f0;border:1px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:0.82rem;color:var(--red);margin-bottom:14px;display:none}
-.cta{width:100%;padding:15px;border:none;border-radius:14px;font-size:0.95rem;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;margin-top:4px}
+.cta{width:100%;padding:15px;border:none;border-radius:14px;font-size:0.95rem;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;margin-top:4px;transition:opacity 0.2s}
+.cta:disabled{opacity:0.6;cursor:not-allowed}
 .cta-dark{background:var(--ink);color:#fff}
 .cta-gold{background:var(--gold);color:var(--ink)}
 .switch-hint{text-align:center;margin-top:16px;font-size:0.82rem;color:var(--slate)}
 .switch-hint a{color:var(--gold);font-weight:700;cursor:pointer}
-
-/* ── HEADER ── */
 .dash-header{background:var(--ink);padding:18px 20px 20px}
 .dash-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .dash-mark{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:#fff}
 .dash-mark span{color:var(--gold)}
 .header-right{display:flex;align-items:center;gap:10px}
 .notif-dot{width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700}
-.status-ico{font-size:1.3rem;cursor:pointer}
 .dash-shop-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:2px}
 .dash-welcome{color:rgba(255,255,255,0.45);font-size:0.78rem}
-
-/* ── STATS ── */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 16px}
 .stat-box{background:var(--white);border-radius:14px;padding:12px 8px;text-align:center;border:1px solid var(--border)}
 .stat-val{font-family:'Syne',sans-serif;font-weight:800;color:var(--ink);font-size:1.2rem}
 .stat-lbl{font-size:0.6rem;color:var(--slate);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
 .stat-val.green{color:var(--green)}
 .stat-val.gold{color:var(--gold)}
-
-/* ── SHOP STATUS CARD ── */
 .status-card{background:var(--white);border-radius:16px;margin:0 16px 12px;padding:16px;border:1px solid var(--border)}
 .sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .sc-title{font-family:'Syne',sans-serif;font-weight:700;color:var(--ink);font-size:0.9rem}
@@ -74,22 +66,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
 .hours-lbl{font-size:0.72rem;color:var(--slate);font-weight:600;white-space:nowrap}
 .hours-inp{padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);flex:1}
 .save-btn-sm{padding:8px 14px;background:var(--ink);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
-
-/* ── PENALTY ── */
-.penalty-card{background:#fee2e2;border:1.5px solid #fecaca;border-radius:14px;margin:0 16px 12px;padding:14px;display:none}
-.penalty-card.show{display:block}
-.pen-title{font-weight:700;color:var(--red);font-size:0.88rem;margin-bottom:4px}
-.pen-sub{font-size:0.75rem;color:#ef4444;line-height:1.5;margin-bottom:8px}
-.strikes-row{display:flex;gap:6px}
-.strike{width:28px;height:28px;border-radius:50%;background:#fecaca;border:2px solid #f87171;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;color:var(--red)}
-.strike.filled{background:var(--red);color:#fff;border-color:var(--red)}
-
-/* ── ORDER TABS ── */
 .order-tabs{display:flex;padding:0 16px;margin-bottom:12px;gap:0}
 .otab{flex:1;padding:9px;border:none;border-bottom:3px solid var(--border);font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.78rem;color:var(--slate);background:transparent;cursor:pointer;text-align:center}
 .otab.on{border-bottom-color:var(--gold);color:var(--ink);font-weight:700}
-
-/* ── ORDER CARDS ── */
 .orders-wrap{padding:0 16px;display:flex;flex-direction:column;gap:12px;padding-bottom:90px}
 .ocard{background:var(--white);border-radius:16px;padding:16px;border:1px solid var(--border)}
 .ocard-top{display:flex;justify-content:space-between;margin-bottom:10px}
@@ -107,47 +86,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
 .oamt{font-family:'Syne',sans-serif;font-weight:800;color:var(--ink);font-size:1rem}
 .otime-pill{background:var(--light);border-radius:6px;padding:3px 10px;font-size:0.7rem;font-weight:600;color:var(--ink)}
 .action-row{display:flex;gap:8px;margin-top:10px}
-.act-btn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;cursor:pointer}
+.act-btn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;cursor:pointer;transition:opacity 0.2s}
+.act-btn:disabled{opacity:0.6;cursor:not-allowed}
 .act-accept{background:var(--green);color:#fff}
 .act-reject{background:#fee2e2;color:var(--red);border:1px solid #fecaca}
 .act-update{background:var(--ink);color:#fff;width:100%}
 .act-ready{background:var(--green);color:#fff;width:100%}
-
-/* ── PHOTO UPLOAD ── */
-.photo-sec{background:#f8fafc;border-radius:12px;padding:12px 14px;margin-top:10px;border:1.5px dashed #e2e8f0}
-.photo-sec-title{font-size:0.7rem;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px}
-.photo-sec-sub{font-size:0.7rem;color:var(--slate);margin-bottom:10px;line-height:1.5}
-.photo-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
-.photo-row::-webkit-scrollbar{display:none}
-.photo-thumb{width:74px;height:74px;border-radius:10px;border:2px dashed #e2e8f0;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;position:relative;overflow:hidden;background:#fff}
-.photo-thumb.done{border:2px solid var(--green)}
-.photo-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px}
-.pt-ico{font-size:1.3rem;margin-bottom:2px}
-.pt-lbl{font-size:0.52rem;font-weight:700;color:#94a3b8;text-transform:uppercase;text-align:center;line-height:1.2}
-.pt-tick{position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.52rem;font-weight:700}
-.photo-warn{font-size:0.72rem;color:var(--red);font-weight:600;margin-top:6px;display:none}
-.photo-warn.show{display:block}
-
-/* ── RATING MODAL ── */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:none;align-items:flex-end;justify-content:center}
 .modal-bg.open{display:flex}
 .modal-box{background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 32px;width:100%;max-width:430px;max-height:85vh;overflow-y:auto}
 .modal-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--ink);margin-bottom:4px}
 .modal-sub{font-size:0.78rem;color:var(--slate);margin-bottom:20px}
-.rating-section{margin-bottom:18px}
-.rating-lbl{font-size:0.72rem;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px}
-.stars-row{display:flex;gap:8px;margin-bottom:12px}
-.star{font-size:2rem;cursor:pointer;opacity:0.2;transition:opacity 0.15s}
-.star.on{opacity:1}
-.rating-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
-.rtag{padding:7px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:0.75rem;font-weight:600;color:var(--slate);cursor:pointer;background:#fff}
-.rtag.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .rating-ta{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:0.85rem;font-family:'DM Sans',sans-serif;resize:none;height:72px;outline:none;color:var(--ink)}
-.rating-ta:focus{border-color:var(--gold)}
 .modal-submit{width:100%;padding:14px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;cursor:pointer;margin-top:4px}
 .modal-cancel{width:100%;padding:12px;background:var(--light);color:var(--slate);border:1px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;margin-top:8px}
-
-/* ── ANALYTICS PAGE ── */
 .analytics-wrap{padding:16px;padding-bottom:90px}
 .analytics-card{background:var(--white);border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--border)}
 .ac-title{font-family:'Syne',sans-serif;font-weight:700;color:var(--ink);font-size:0.92rem;margin-bottom:14px}
@@ -155,16 +107,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
 .earn-sub{font-size:0.75rem;color:var(--slate)}
 .bar-row{display:flex;align-items:flex-end;gap:6px;height:80px;margin:14px 0 6px}
 .bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.bar{width:100%;border-radius:4px 4px 0 0;background:var(--gold);min-height:4px;transition:height 0.4s}
+.bar{width:100%;border-radius:4px 4px 0 0;background:var(--gold);min-height:4px}
 .bar-lbl{font-size:0.6rem;color:var(--slate);font-weight:600}
 .bar-val{font-size:0.65rem;font-weight:700;color:var(--ink)}
-.review-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--light)}
-.review-item:last-child{border-bottom:none}
-.ri-stars{color:#f59e0b;font-size:0.85rem;margin-bottom:3px}
-.ri-text{font-size:0.82rem;color:var(--ink);margin-bottom:2px}
-.ri-by{font-size:0.7rem;color:var(--slate)}
-
-/* ── PROFILE PAGE ── */
 .profile-hero{background:var(--ink);padding:28px 20px 32px;text-align:center}
 .prof-ava{width:70px;height:70px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;color:var(--ink);margin:0 auto 12px}
 .prof-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:#fff;margin-bottom:4px}
@@ -175,32 +120,26 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
 .pi-lbl{font-weight:600;color:var(--ink);font-size:0.9rem;flex:1}
 .pi-arr{color:var(--slate);font-size:0.9rem}
 .pmenu-item.danger .pi-lbl{color:var(--red)}
-
-/* ── BOTTOM NAV ── */
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--white);border-top:1px solid var(--border);display:flex;padding:10px 0 14px;z-index:20}
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
 .bnav-ico{font-size:1.2rem}
 .bnav-lbl{font-size:0.58rem;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.04em}
 .bnav-item.on .bnav-lbl{color:var(--ink)}
-
-/* ── SUPPORT PAGE ── */
-.support-wrap{padding:16px;padding-bottom:90px}
 .sup-card{background:var(--white);border-radius:16px;padding:18px;margin-bottom:12px;border:1px solid var(--border)}
 .sup-title{font-family:'Syne',sans-serif;font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:12px}
 .sup-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--cream);border-radius:10px;margin-bottom:8px;text-decoration:none;border:1px solid var(--border)}
-.sup-btn:last-child{margin-bottom:0}
 .sb-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0}
 .sb-lbl{font-weight:600;color:var(--ink);font-size:0.85rem}
 .sb-val{font-size:0.72rem;color:var(--slate);margin-top:1px}
-
-/* ── TOAST ── */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 22px;border-radius:30px;font-size:0.82rem;font-weight:600;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;max-width:90%}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--slate)}
+.empty-state .ico{font-size:3rem;margin-bottom:12px}
 </style>
 </head>
 <body>
 
-<!-- ══ AUTH ══ -->
+<!-- AUTH -->
 <div class="page show" id="pgAuth">
   <div class="auth-hero">
     <div class="wordmark">Dhobi<span>Wala</span></div>
@@ -212,51 +151,46 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
       <button class="tab-btn" id="tbReg" onclick="showTab('reg')">Register Shop</button>
     </div>
     <div class="err-box" id="authErr"></div>
-    <!-- LOGIN -->
     <div class="form-wrap show" id="fmLogin">
       <div class="field"><label>Phone Number</label><input class="finput" type="tel" id="lPhone" placeholder="98765 43210" maxlength="10"/></div>
       <div class="field"><label>Password</label><div class="pass-wrap"><input class="finput" type="password" id="lPass" placeholder="Your password"/><button class="eye-btn" type="button" onclick="toggleEye('lPass',this)">👁</button></div></div>
-      <button class="cta cta-dark" onclick="doLogin()">Login to Dashboard →</button>
+      <button class="cta cta-dark" id="btnLogin" onclick="doLogin()">Login to Dashboard →</button>
       <div class="switch-hint">New vendor? <a onclick="showTab('reg')">Register shop</a></div>
     </div>
-    <!-- REGISTER -->
     <div class="form-wrap" id="fmReg">
       <div class="field"><label>Shop Name</label><input class="finput" type="text" id="rShop" placeholder="e.g. Civil Iron Palace"/></div>
       <div class="field"><label>Owner Name</label><input class="finput" type="text" id="rOwner" placeholder="Your full name"/></div>
       <div class="field"><label>Phone Number</label><input class="finput" type="tel" id="rPhone" placeholder="98765 43210" maxlength="10"/></div>
       <div class="field"><label>Area</label><input class="finput" type="text" id="rArea" placeholder="e.g. Civil Township, Sector 6"/></div>
+      <div class="field"><label>Shop Address</label><input class="finput" type="text" id="rAddress" placeholder="e.g. Plot 12, Sector 6, Civil Township"/></div>
+      <div class="field"><label>Pincode</label><input class="finput" type="tel" id="rPincode" placeholder="e.g. 769001" maxlength="6"/></div>
+      <div class="field"><label>Shop Phone</label><input class="finput" type="tel" id="rShopPhone" placeholder="98765 43210" maxlength="10"/></div>
       <div class="field"><label>Password</label><div class="pass-wrap"><input class="finput" type="password" id="rPass" placeholder="Create password"/><button class="eye-btn" type="button" onclick="toggleEye('rPass',this)">👁</button></div></div>
-      <button class="cta cta-gold" onclick="doRegister()">Register My Shop →</button>
+      <button class="cta cta-gold" id="btnReg" onclick="doRegister()">Register My Shop →</button>
       <div class="switch-hint">Already registered? <a onclick="showTab('login')">Login</a></div>
     </div>
   </div>
 </div>
 
-<!-- ══ DASHBOARD ══ -->
+<!-- DASHBOARD -->
 <div class="page" id="pgDash">
   <div class="dash-header">
     <div class="dash-top">
-      <div>
-        <div class="dash-mark">Dhobi<span>Wala</span></div>
-      </div>
+      <div class="dash-mark">Dhobi<span>Wala</span></div>
       <div class="header-right">
         <div class="notif-dot" id="notifDot">0</div>
-        <div class="status-ico" id="headerIco" onclick="go('pgProfile')">🟢</div>
+        <div style="font-size:1.3rem;cursor:pointer" id="headerIco" onclick="go('pgProfile')">🟢</div>
       </div>
     </div>
-    <div class="dash-shop-name" id="dashShopName">Civil Iron Palace</div>
-    <div class="dash-welcome" id="dashWelcome">Good morning, Anil! 👋</div>
+    <div class="dash-shop-name" id="dashShopName">Shop Name</div>
+    <div class="dash-welcome" id="dashWelcome">Good morning! 👋</div>
   </div>
-
-  <!-- STATS -->
   <div class="stats-row">
     <div class="stat-box"><div class="stat-val" id="stPending">0</div><div class="stat-lbl">New</div></div>
     <div class="stat-box"><div class="stat-val" id="stToday">0</div><div class="stat-lbl">Today</div></div>
     <div class="stat-box"><div class="stat-val green" id="stEarn">₹0</div><div class="stat-lbl">Earned</div></div>
     <div class="stat-box"><div class="stat-val gold" id="stRating">—</div><div class="stat-lbl">Rating</div></div>
   </div>
-
-  <!-- SHOP STATUS -->
   <div class="status-card">
     <div class="sc-top">
       <div class="sc-title">🏪 Shop Status</div>
@@ -275,22 +209,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
       <div id="hoursSaved" style="font-size:0.72rem;color:var(--green);margin-top:6px;display:none">✅ Hours saved!</div>
     </div>
   </div>
-
-  <!-- PENALTY -->
-  <div class="penalty-card" id="penaltyCard">
-    <div class="pen-title">⚠️ Penalty Warning</div>
-    <div class="pen-sub" id="penText">Missed orders while shop was OPEN. 3 strikes = 24hr suspension.</div>
-    <div class="strikes-row" id="strikeRow"></div>
-  </div>
-
-  <!-- ORDER TABS -->
   <div class="order-tabs">
     <button class="otab on" id="ot-new" onclick="filterOrders('new')">🔔 New</button>
     <button class="otab" id="ot-active" onclick="filterOrders('active')">⚡ Active</button>
     <button class="otab" id="ot-done" onclick="filterOrders('done')">✅ Done</button>
   </div>
-  <div class="orders-wrap" id="ordersWrap"></div>
-
+  <div class="orders-wrap" id="ordersWrap"><div class="empty-state"><div class="ico">🔄</div><div>Loading orders...</div></div></div>
   <div class="bnav">
     <div class="bnav-item on" onclick="go('pgDash')"><div class="bnav-ico">📋</div><div class="bnav-lbl">Orders</div></div>
     <div class="bnav-item" onclick="go('pgAnalytics')"><div class="bnav-ico">📊</div><div class="bnav-lbl">Analytics</div></div>
@@ -299,7 +223,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
   </div>
 </div>
 
-<!-- ══ ANALYTICS ══ -->
+<!-- ANALYTICS -->
 <div class="page" id="pgAnalytics">
   <div class="dash-header">
     <div class="dash-top">
@@ -338,18 +262,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
         <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
       </div>
     </div>
-    <div class="analytics-card">
-      <div class="ac-title">⭐ Recent Reviews from Customers</div>
-      <div id="reviewsList">
-        <div class="review-item">
-          <div style="flex:1"><div class="ri-stars">★★★★★</div><div class="ri-text">Excellent ironing — crisp and neat!</div><div class="ri-by">Ramesh Panda · 2 days ago</div></div>
-        </div>
-        <div class="review-item">
-          <div style="flex:1"><div class="ri-stars">★★★★☆</div><div class="ri-text">Good work, slightly slow delivery.</div><div class="ri-by">Priya Sahoo · 4 days ago</div></div>
-        </div>
-        <div style="text-align:center;padding:16px;font-size:0.8rem;color:var(--slate)" id="noReviews" style="display:none">No reviews yet. Complete orders to get rated!</div>
-      </div>
-    </div>
   </div>
   <div class="bnav">
     <div class="bnav-item" onclick="go('pgDash')"><div class="bnav-ico">📋</div><div class="bnav-lbl">Orders</div></div>
@@ -359,7 +271,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
   </div>
 </div>
 
-<!-- ══ SUPPORT ══ -->
+<!-- SUPPORT -->
 <div class="page" id="pgSupport">
   <div class="dash-header">
     <div class="dash-top">
@@ -371,12 +283,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
     <div class="dash-shop-name">Help & Support</div>
     <div class="dash-welcome">We respond within 2 hours</div>
   </div>
-  <div class="support-wrap">
+  <div style="padding:16px;padding-bottom:90px">
     <div class="sup-card">
       <div class="sup-title">📧 Vendor Support</div>
       <a class="sup-btn" href="mailto:vendors@dhobiwala.in?subject=Vendor Support"><div class="sb-ico" style="background:#dbeafe;color:var(--blue)">📧</div><div><div class="sb-lbl">General Support</div><div class="sb-val">vendors@dhobiwala.in</div></div></a>
       <a class="sup-btn" href="mailto:payments@dhobiwala.in?subject=Payment Query"><div class="sb-ico" style="background:#f0fdf4;color:var(--green)">💰</div><div><div class="sb-lbl">Payments & Settlement</div><div class="sb-val">payments@dhobiwala.in</div></div></a>
-      <a class="sup-btn" href="mailto:vendors@dhobiwala.in?subject=Appeal - Suspension"><div class="sb-ico" style="background:#fee2e2;color:var(--red)">⚠️</div><div><div class="sb-lbl">Appeal a Suspension</div><div class="sb-val">vendors@dhobiwala.in · Subject: Appeal</div></div></a>
     </div>
     <div class="sup-card">
       <div class="sup-title">❓ FAQs</div>
@@ -384,9 +295,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
         <div style="font-weight:600;color:var(--ink);margin-bottom:3px">When do I get paid?</div>
         <div style="margin-bottom:10px">Every Monday for previous week's orders, directly to your bank account.</div>
         <div style="font-weight:600;color:var(--ink);margin-bottom:3px">What if I miss 3 orders?</div>
-        <div style="margin-bottom:10px">24-hour suspension. Email vendors@dhobiwala.in immediately if emergency.</div>
-        <div style="font-weight:600;color:var(--ink);margin-bottom:3px">How do I update shop details?</div>
-        <div>Email vendors@dhobiwala.in with your shop name and changes needed.</div>
+        <div>24-hour suspension. Email vendors@dhobiwala.in immediately if emergency.</div>
       </div>
     </div>
   </div>
@@ -398,24 +307,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
   </div>
 </div>
 
-<!-- ══ PROFILE ══ -->
+<!-- PROFILE -->
 <div class="page" id="pgProfile">
   <div class="profile-hero">
     <div class="back-row" onclick="go('pgDash')" style="cursor:pointer;padding-bottom:16px;display:flex"><div style="color:rgba(255,255,255,0.4)">←</div></div>
     <div class="prof-ava" id="profAva">A</div>
-    <div class="prof-name" id="profName">Anil</div>
+    <div class="prof-name" id="profName">Owner</div>
     <div class="prof-phone" id="profPhone">+91 XXXXXXXXXX</div>
   </div>
   <div class="pmenu">
-    <div class="pmenu-item" style="background:var(--white);justify-content:space-between">
-      <div><div style="font-size:0.7rem;color:var(--slate);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Shop Name</div><div style="font-weight:700;color:var(--ink)" id="profShop">Civil Iron Palace</div></div>
+    <div class="pmenu-item" style="justify-content:space-between">
+      <div><div style="font-size:0.7rem;color:var(--slate);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Shop Name</div><div style="font-weight:700;color:var(--ink)" id="profShop">—</div></div>
     </div>
-    <div class="pmenu-item" style="background:var(--white);justify-content:space-between">
-      <div><div style="font-size:0.7rem;color:var(--slate);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Area</div><div style="font-weight:700;color:var(--ink)" id="profArea">Civil Township</div></div>
+    <div class="pmenu-item" style="justify-content:space-between">
+      <div><div style="font-size:0.7rem;color:var(--slate);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Area</div><div style="font-weight:700;color:var(--ink)" id="profArea">—</div></div>
     </div>
     <div class="pmenu-item" onclick="go('pgAnalytics')"><div class="pi-ico">📊</div><div class="pi-lbl">My Analytics</div><div class="pi-arr">›</div></div>
     <div class="pmenu-item" onclick="go('pgSupport')"><div class="pi-ico">💬</div><div class="pi-lbl">Help & Support</div><div class="pi-arr">›</div></div>
-    <div class="pmenu-item"><div class="pi-ico">✉️</div><div class="pi-lbl">vendors@dhobiwala.in</div><div class="pi-arr">›</div></div>
     <div class="pmenu-item danger" onclick="doLogout()"><div class="pi-ico">🚪</div><div class="pi-lbl">Logout</div><div class="pi-arr">›</div></div>
   </div>
   <div class="bnav">
@@ -423,59 +331,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
     <div class="bnav-item" onclick="go('pgAnalytics')"><div class="bnav-ico">📊</div><div class="bnav-lbl">Analytics</div></div>
     <div class="bnav-item" onclick="go('pgSupport')"><div class="bnav-ico">💬</div><div class="bnav-lbl">Support</div></div>
     <div class="bnav-item on"><div class="bnav-ico">👤</div><div class="bnav-lbl">Profile</div></div>
-  </div>
-</div>
-
-<!-- ══ RATING MODAL ══ -->
-<div class="modal-bg" id="ratingModal">
-  <div class="modal-box">
-    <div class="modal-title">⭐ Rate this Order</div>
-    <div class="modal-sub" id="ratingModalSub">Rate the rider and customer for order #DW000</div>
-
-    <!-- RATE RIDER -->
-    <div class="rating-section">
-      <div class="rating-lbl">🏍 Rate the Rider</div>
-      <div class="stars-row" id="riderStars">
-        <span class="star" onclick="setStar('rider',1)">★</span>
-        <span class="star" onclick="setStar('rider',2)">★</span>
-        <span class="star" onclick="setStar('rider',3)">★</span>
-        <span class="star" onclick="setStar('rider',4)">★</span>
-        <span class="star" onclick="setStar('rider',5)">★</span>
-      </div>
-      <div class="rating-lbl" style="margin-top:-4px">Punctuality & Handling</div>
-      <div class="rating-tags">
-        <span class="rtag" onclick="this.classList.toggle('on')">On time</span>
-        <span class="rtag" onclick="this.classList.toggle('on')">Careful with clothes</span>
-        <span class="rtag" onclick="this.classList.toggle('on')">Polite</span>
-        <span class="rtag" onclick="this.classList.toggle('on')">Fast pickup</span>
-        <span class="rtag" onclick="this.classList.toggle('on')">Late arrival</span>
-        <span class="rtag" onclick="this.classList.toggle('on')">Rough handling</span>
-      </div>
-      <textarea class="rating-ta" id="riderFeedback" placeholder="Any feedback about the rider..."></textarea>
-    </div>
-
-    <!-- RATE CUSTOMER -->
-    <div class="rating-section">
-      <div class="rating-lbl">👤 Rate the Customer</div>
-      <div class="stars-row" id="custStars">
-        <span class="star" onclick="setStar('cust',1)">★</span>
-        <span class="star" onclick="setStar('cust',2)">★</span>
-        <span class="star" onclick="setStar('cust',3)">★</span>
-        <span class="star" onclick="setStar('cust',4)">★</span>
-        <span class="star" onclick="setStar('cust',5)">★</span>
-      </div>
-      <div class="rating-tags">
-        <span class="rtag" onclick="this.classList.toggle('on')">Available on time</span>
-        <span class="rtag" onclick="this.classList.toggle('on')">Clear instructions</span>
-        <span class="rtag" onclick="this.classList.toggle('on')">Good payment</span>
-        <span class="rtag" onclick="this.classList.toggle('on')">Not available</span>
-        <span class="rtag" onclick="this.classList.toggle('on')">Difficult</span>
-      </div>
-      <textarea class="rating-ta" id="custFeedback" placeholder="Any feedback about the customer..."></textarea>
-    </div>
-
-    <button class="modal-submit" onclick="submitVendorRating()">Submit Rating 🌟</button>
-    <button class="modal-cancel" onclick="closeRatingModal()">Skip for now</button>
   </div>
 </div>
 
@@ -490,400 +345,445 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
   </div>
 </div>
 
-<!-- STATUS MODAL -->
-<div class="modal-bg" id="statusModal">
-  <div class="modal-box">
-    <div class="modal-title">📋 Update Order Status</div>
-    <div class="modal-sub">Select the current status of this order</div>
-    <div style="display:flex;flex-direction:column;gap:8px" id="statusOptions"></div>
-    <button class="modal-cancel" style="margin-top:10px" onclick="closeModal('statusModal')">Cancel</button>
-  </div>
-</div>
-
-<!-- TOAST -->
 <div class="toast" id="toastEl"></div>
 
 <script>
-// ── DATA ──
-var ORDERS = [
-  {id:'DW001',num:'#DW102401',cust:'Ramesh Panda',phone:'9876543210',items:'3 Shirts, 2 Trousers',addr:'House 12, Sector 6, Civil Township',slot:'Morning 8–10 AM',amt:170,status:'pending_vendor',time:'Just now',rated:false},
-  {id:'DW002',num:'#DW102400',cust:'Priya Sahoo',phone:'9876543211',items:'2 Sarees, 1 Kurta',addr:'Flat 5B, Steel Township',slot:'Noon 12–2 PM',amt:180,status:'pending_vendor',time:'5 min ago',rated:false},
-  {id:'DW003',num:'#DW102398',cust:'Sunita Mishra',phone:'9876543212',items:'1 Suit, 3 Formal Shirts',addr:'14 Civil Lines',slot:'Evening 5–7 PM',amt:260,status:'ironing',time:'2 hrs ago',rated:false},
-  {id:'DW004',num:'#DW102390',cust:'Anil Mohapatra',phone:'8249113072',items:'4 Sarees',addr:'Sector 19, Civil Township',slot:'Morning 8–10 AM',amt:180,status:'delivered',time:'Yesterday',rated:false},
-];
+// ─── CONFIG ──────────────────────────────────────
+var API = 'https://dhobiwala-backend.onrender.com';
+var currentFilter = 'new', currentOrderId = null, shopOpen = true;
+var allOrders = [], shopData = null, vendorData = null;
+var orderTimers = {}, TIMER_MAX = 15 * 60;
 
-var currentFilter='new', currentOrderId=null, shopOpen=true;
-var starRatings={rider:0,cust:0};
-var vendorPhotos={};
-var orderTimers={};
-var missedOrders=JSON.parse(localStorage.getItem('dw_v_misses')||'[]');
-var vendorData=null;
-var vendorRatings=JSON.parse(localStorage.getItem('dw_v_ratings')||'[]');
+// ─── SESSION ─────────────────────────────────────
+function getToken()      { return localStorage.getItem('dw_vendor_token'); }
+function saveToken(t)    { localStorage.setItem('dw_vendor_token', t); }
+function getVendorData() { try { return JSON.parse(localStorage.getItem('dw_vendor_data') || 'null'); } catch(e) { return null; } }
+function saveVendorData(v){ localStorage.setItem('dw_vendor_data', JSON.stringify(v)); }
 
-// ── NAV ──
-function go(pgId){
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('show');});
+// ─── NAVIGATION ──────────────────────────────────
+function go(pgId) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('show'); });
   document.getElementById(pgId).classList.add('show');
-  window.scrollTo(0,0);
-  if(pgId==='pgDash') renderOrders();
-  if(pgId==='pgAnalytics') renderAnalytics();
+  window.scrollTo(0, 0);
+  if (pgId === 'pgDash')      loadOrders();
+  if (pgId === 'pgAnalytics') renderAnalytics();
 }
 
-// ── AUTH ──
-function showTab(t){
-  document.getElementById('tbLogin').className='tab-btn'+(t==='login'?' active':'');
-  document.getElementById('tbReg').className='tab-btn'+(t==='reg'?' active':'');
-  document.getElementById('fmLogin').className='form-wrap'+(t==='login'?' show':'');
-  document.getElementById('fmReg').className='form-wrap'+(t==='reg'?' show':'');
-  document.getElementById('authErr').style.display='none';
+// ─── AUTH HELPERS ────────────────────────────────
+function showTab(t) {
+  document.getElementById('tbLogin').className = 'tab-btn' + (t === 'login' ? ' active' : '');
+  document.getElementById('tbReg').className   = 'tab-btn' + (t === 'reg'   ? ' active' : '');
+  document.getElementById('fmLogin').className = 'form-wrap' + (t === 'login' ? ' show' : '');
+  document.getElementById('fmReg').className   = 'form-wrap' + (t === 'reg'   ? ' show' : '');
+  document.getElementById('authErr').style.display = 'none';
 }
-function showErr(m){var e=document.getElementById('authErr');e.textContent=m;e.style.display='block';}
-function toggleEye(id,btn){var i=document.getElementById(id);if(i.type==='password'){i.type='text';btn.textContent='🙈';}else{i.type='password';btn.textContent='👁';}}
-function getVendors(){try{return JSON.parse(localStorage.getItem('dw_vendors')||'{}');}catch(e){return{};}}
-function saveVendors(v){localStorage.setItem('dw_vendors',JSON.stringify(v));}
-function getSess(){try{return JSON.parse(localStorage.getItem('dw_vsess')||'null');}catch(e){return null;}}
-function saveSess(v){localStorage.setItem('dw_vsess',JSON.stringify(v));}
+function showErr(m) { var e = document.getElementById('authErr'); e.textContent = m; e.style.display = 'block'; }
+function toggleEye(id, btn) {
+  var i = document.getElementById(id);
+  if (i.type === 'password') { i.type = 'text'; btn.textContent = '🙈'; }
+  else { i.type = 'password'; btn.textContent = '👁'; }
+}
 
-function doLogin(){
-  var ph=document.getElementById('lPhone').value.trim();
-  var pw=document.getElementById('lPass').value.trim();
-  if(!ph||!pw){showErr('Please enter phone and password');return;}
-  var vendors=getVendors();
-  if(!vendors[ph]){showErr('No account found. Please register your shop.');return;}
-  if(vendors[ph].password!==pw){showErr('Wrong password. Try again.');return;}
-  loginVendor(vendors[ph]);
+// ─── LOGIN — real API ─────────────────────────────
+function doLogin() {
+  var ph = document.getElementById('lPhone').value.trim();
+  var pw = document.getElementById('lPass').value.trim();
+  if (!ph || !pw) { showErr('Please enter phone and password'); return; }
+  var btn = document.getElementById('btnLogin');
+  btn.disabled = true; btn.textContent = 'Logging in…';
+  fetch(API + '/api/auth/vendor/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone: ph, password: pw })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    btn.disabled = false; btn.textContent = 'Login to Dashboard →';
+    if (!data.success) { showErr(data.message || 'Login failed'); return; }
+    saveToken(data.token);
+    saveVendorData(data.vendor || data.user);
+    loginVendor(data.vendor || data.user, data.shop);
+  })
+  .catch(function() { btn.disabled = false; btn.textContent = 'Login to Dashboard →'; showErr('Network error. Check connection.'); });
 }
-function doRegister(){
-  var shop=document.getElementById('rShop').value.trim();
-  var owner=document.getElementById('rOwner').value.trim();
-  var ph=document.getElementById('rPhone').value.trim();
-  var area=document.getElementById('rArea').value.trim();
-  var pw=document.getElementById('rPass').value.trim();
-  if(!shop||!owner||!ph||!area||!pw){showErr('Please fill all fields');return;}
-  if(ph.length!==10){showErr('Enter valid 10-digit phone');return;}
-  if(pw.length<4){showErr('Password must be at least 4 characters');return;}
-  var vendors=getVendors();
-  if(vendors[ph]){showErr('Account exists. Please login.');return;}
-  var v={shopName:shop,ownerName:owner,phone:ph,area:area,password:pw};
-  vendors[ph]=v; saveVendors(vendors); loginVendor(v);
+
+// ─── REGISTER — real API (creates user + shop) ────
+function doRegister() {
+  var shop     = document.getElementById('rShop').value.trim();
+  var owner    = document.getElementById('rOwner').value.trim();
+  var ph       = document.getElementById('rPhone').value.trim();
+  var area     = document.getElementById('rArea').value.trim();
+  var address  = document.getElementById('rAddress').value.trim();
+  var pincode  = document.getElementById('rPincode').value.trim();
+  var shopPhone= document.getElementById('rShopPhone').value.trim();
+  var pw       = document.getElementById('rPass').value.trim();
+  if (!shop||!owner||!ph||!area||!address||!pincode||!shopPhone||!pw) { showErr('Please fill all fields'); return; }
+  if (ph.length !== 10)      { showErr('Enter valid 10-digit phone'); return; }
+  if (pincode.length !== 6)  { showErr('Enter valid 6-digit pincode'); return; }
+  if (shopPhone.length !== 10){ showErr('Enter valid 10-digit shop phone'); return; }
+  if (pw.length < 4)         { showErr('Password must be at least 4 characters'); return; }
+  var btn = document.getElementById('btnReg');
+  btn.disabled = true; btn.textContent = 'Registering…';
+
+  // Step 1: Register the vendor user account
+  fetch(API + '/api/auth/vendor/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: owner, phone: ph, password: pw, role: 'vendor' })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (!data.success) { btn.disabled = false; btn.textContent = 'Register My Shop →'; showErr(data.message || 'Registration failed'); return; }
+    var token = data.token;
+    saveToken(token);
+    saveVendorData(data.user);
+
+    // Step 2: Create the shop
+    return fetch(API + '/api/shops', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ name: shop, area: area, address: address, pincode: pincode, phone: shopPhone, city: 'Rourkela', openTime: '08:00', closeTime: '21:00', isApproved: true, isOpen: true, tags: ['Shirts', 'Trousers', 'Sarees'], services: [
+        { name: 'Shirt', price: 15, ico: '👔' },
+        { name: 'Trouser', price: 20, ico: '👖' },
+        { name: 'Saree', price: 40, ico: '🥻' },
+        { name: 'Kurta', price: 20, ico: '🧥' },
+        { name: 'Suit (2pc)', price: 80, ico: '🤵' },
+        { name: 'Bedsheet', price: 35, ico: '🛏' }
+      ]})
+    });
+  })
+  .then(function(r) { if (r) return r.json(); })
+  .then(function(shopRes) {
+    btn.disabled = false; btn.textContent = 'Register My Shop →';
+    if (!shopRes || !shopRes.success) { toast('Account created! Shop setup may need attention.'); }
+    var v = getVendorData();
+    loginVendor(v, shopRes ? shopRes.shop : null);
+  })
+  .catch(function() { btn.disabled = false; btn.textContent = 'Register My Shop →'; showErr('Network error. Check connection.'); });
 }
-function loginVendor(v){
-  vendorData=v; saveSess(v);
-  var h=new Date().getHours();
-  var g=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
-  document.getElementById('dashShopName').textContent=v.shopName;
-  document.getElementById('dashWelcome').textContent=g+', '+v.ownerName.split(' ')[0]+'! 👋';
-  document.getElementById('profAva').textContent=v.ownerName[0].toUpperCase();
-  document.getElementById('profName').textContent=v.ownerName;
-  document.getElementById('profPhone').textContent='+91 '+v.phone;
-  document.getElementById('profShop').textContent=v.shopName;
-  document.getElementById('profArea').textContent=v.area||'Rourkela';
-  document.getElementById('anaShopName').textContent=v.shopName;
-  loadShopStatus(); renderStrikes();
+
+// ─── LOGIN VENDOR (set UI) ────────────────────────
+function loginVendor(v, shop) {
+  vendorData = v;
+  shopData   = shop;
+  var h = new Date().getHours();
+  var g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  var shopName = (shop && shop.name) || (v && v.shopName) || 'Your Shop';
+  var ownerName = (v && (v.name || v.ownerName)) || 'Owner';
+  var area = (shop && shop.area) || (v && v.area) || 'Rourkela';
+
+  document.getElementById('dashShopName').textContent = shopName;
+  document.getElementById('dashWelcome').textContent  = g + ', ' + ownerName.split(' ')[0] + '! 👋';
+  document.getElementById('profAva').textContent      = ownerName[0].toUpperCase();
+  document.getElementById('profName').textContent     = ownerName;
+  document.getElementById('profPhone').textContent    = '+91 ' + (v && v.phone || '');
+  document.getElementById('profShop').textContent     = shopName;
+  document.getElementById('profArea').textContent     = area;
+  document.getElementById('anaShopName').textContent  = shopName;
+
+  if (shop && shop.openTime) document.getElementById('openTime').value  = shop.openTime;
+  if (shop && shop.closeTime) document.getElementById('closeTime').value = shop.closeTime;
+
   go('pgDash');
 }
-function doLogout(){localStorage.removeItem('dw_vsess');go('pgAuth');}
 
-// ── SHOP STATUS ──
-function toggleShop(){
-  shopOpen=!shopOpen;
-  var tog=document.getElementById('shopToggle');
-  var dot=document.getElementById('siDot');
-  var txt=document.getElementById('siText');
-  var ico=document.getElementById('headerIco');
-  tog.classList.toggle('on',shopOpen);
-  dot.className='si-dot'+(shopOpen?' open':'');
-  txt.textContent=shopOpen?'Your shop is OPEN — accepting orders':'Your shop is CLOSED — not accepting orders';
-  ico.textContent=shopOpen?'🟢':'🔴';
-  localStorage.setItem('dw_shopOpen',shopOpen?'1':'0');
-  toast(shopOpen?'🟢 Shop is now OPEN':'🔴 Shop is now CLOSED');
+function doLogout() {
+  localStorage.removeItem('dw_vendor_token');
+  localStorage.removeItem('dw_vendor_data');
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('show'); });
+  document.getElementById('pgAuth').classList.add('show');
 }
-function saveHours(){
-  localStorage.setItem('dw_hours',JSON.stringify({open:document.getElementById('openTime').value,close:document.getElementById('closeTime').value}));
-  var c=document.getElementById('hoursSaved');c.style.display='block';
-  setTimeout(function(){c.style.display='none';},2000);
-}
-function loadShopStatus(){
-  if(localStorage.getItem('dw_shopOpen')==='0'){
-    shopOpen=false;
-    document.getElementById('shopToggle').classList.remove('on');
-    document.getElementById('siDot').className='si-dot';
-    document.getElementById('siText').textContent='Your shop is CLOSED';
-    document.getElementById('headerIco').textContent='🔴';
+
+// ─── SHOP TOGGLE ─────────────────────────────────
+function toggleShop() {
+  shopOpen = !shopOpen;
+  document.getElementById('shopToggle').classList.toggle('on', shopOpen);
+  document.getElementById('siDot').className = 'si-dot' + (shopOpen ? ' open' : '');
+  document.getElementById('siText').textContent = shopOpen ? 'Your shop is OPEN — accepting orders' : 'Your shop is CLOSED — not accepting orders';
+  document.getElementById('headerIco').textContent = shopOpen ? '🟢' : '🔴';
+  toast(shopOpen ? '🟢 Shop is now OPEN' : '🔴 Shop is now CLOSED');
+
+  // Update shop status in backend if we have shopData
+  if (shopData && shopData._id) {
+    var token = getToken();
+    fetch(API + '/api/shops/' + shopData._id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ isOpen: shopOpen })
+    }).catch(function(){});
   }
-  var h=JSON.parse(localStorage.getItem('dw_hours')||'null');
-  if(h){document.getElementById('openTime').value=h.open;document.getElementById('closeTime').value=h.close;}
 }
 
-// ── PENALTY ──
-function addStrike(orderId){
-  if(!shopOpen) return;
-  missedOrders.push({id:orderId,at:new Date().toISOString()});
-  localStorage.setItem('dw_v_misses',JSON.stringify(missedOrders));
-  renderStrikes();
-  if(missedOrders.length>=3) suspendShop();
-  else toast('⚠️ Strike '+missedOrders.length+'/3 — missed order!');
-}
-function suspendShop(){
-  shopOpen=false;
-  document.getElementById('shopToggle').classList.remove('on');
-  document.getElementById('siText').textContent='🚫 SUSPENDED for 24 hours — too many missed orders';
-  document.getElementById('headerIco').textContent='🚫';
-  document.getElementById('shopToggle').onclick=null;
-  localStorage.setItem('dw_shopOpen','0');
-  toast('🚫 Shop suspended for 24 hours!');
-}
-function renderStrikes(){
-  var n=Math.min(missedOrders.length,3);
-  var card=document.getElementById('penaltyCard');
-  if(n===0){card.classList.remove('show');return;}
-  card.classList.add('show');
-  document.getElementById('penText').textContent='You have '+n+' strike'+(n>1?'s':'')+' for missed orders while OPEN. '+(3-n)+' more = 24hr suspension.';
-  document.getElementById('strikeRow').innerHTML=Array.from({length:3},function(_,i){return '<div class="strike'+(i<n?' filled':'')+'">'+(i<n?'✕':(i+1))+'</div>';}).join('');
+function saveHours() {
+  var open  = document.getElementById('openTime').value;
+  var close = document.getElementById('closeTime').value;
+  if (shopData && shopData._id) {
+    var token = getToken();
+    fetch(API + '/api/shops/' + shopData._id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ openTime: open, closeTime: close })
+    }).catch(function(){});
+  }
+  var c = document.getElementById('hoursSaved');
+  c.style.display = 'block';
+  setTimeout(function(){ c.style.display = 'none'; }, 2000);
 }
 
-// ── ORDER TIMERS ──
-var TIMER_MAX=15*60;
-function startTimer(orderId){
-  if(orderTimers[orderId]) return;
-  orderTimers[orderId]={secs:TIMER_MAX};
-  orderTimers[orderId].interval=setInterval(function(){
-    orderTimers[orderId].secs--;
-    var el=document.getElementById('otimer_'+orderId);
-    if(el){
-      var s=orderTimers[orderId].secs;
-      var m=Math.floor(s/60),sec=s%60;
-      el.textContent=('0'+m).slice(-2)+':'+('0'+sec).slice(-2);
-      el.style.color=s<=120?'#dc2626':'#d97706';
-      var fill=document.getElementById('ofill_'+orderId);
-      if(fill){fill.style.width=((s/TIMER_MAX)*100)+'%';fill.style.background=s<=120?'#dc2626':'#f59e0b';}
+// ─── LOAD ORDERS — real API ───────────────────────
+function loadOrders() {
+  var token = getToken();
+  document.getElementById('ordersWrap').innerHTML = '<div class="empty-state"><div class="ico">🔄</div><div>Loading orders...</div></div>';
+
+  // First get my shop if we don't have it
+  var shopPromise = shopData
+    ? Promise.resolve({ success: true, shop: shopData })
+    : fetch(API + '/api/shops/my/shop', { headers: { 'Authorization': 'Bearer ' + token } }).then(function(r){ return r.json(); });
+
+  shopPromise.then(function(sd) {
+    if (sd.success && sd.shop) {
+      shopData = sd.shop;
+      // Update UI with real shop data
+      document.getElementById('dashShopName').textContent = sd.shop.name;
+      document.getElementById('profShop').textContent = sd.shop.name;
+      document.getElementById('profArea').textContent  = sd.shop.area || 'Rourkela';
     }
-    if(orderTimers[orderId].secs<=0){
-      clearInterval(orderTimers[orderId].interval);
-      delete orderTimers[orderId];
-      var o=ORDERS.find(function(x){return x.id===orderId;});
-      if(o&&o.status==='pending_vendor'){
-        o.status='rejected'; addStrike(orderId); renderOrders();
-        toast('⏰ Order '+o.num+' auto-cancelled — timeout');
-      }
-    }
-  },1000);
+    // Now fetch orders for this shop
+    return fetch(API + '/api/orders?shopId=' + (shopData && shopData._id ? shopData._id : ''), {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    allOrders = (data.success && data.orders) ? data.orders : [];
+    renderOrders();
+  })
+  .catch(function() {
+    allOrders = [];
+    renderOrders();
+  });
 }
 
-// ── RENDER ORDERS ──
-function filterOrders(f){
-  currentFilter=f;
-  ['new','active','done'].forEach(function(t){
-    var el=document.getElementById('ot-'+t);
-    if(el) el.className='otab'+(f===t?' on':'');
+// ─── FILTER & RENDER ORDERS ──────────────────────
+function filterOrders(f) {
+  currentFilter = f;
+  ['new','active','done'].forEach(function(t) {
+    var el = document.getElementById('ot-' + t);
+    if (el) el.className = 'otab' + (f === t ? ' on' : '');
   });
   renderOrders();
 }
 
-function statusBadge(s){
-  var map={pending_vendor:['ob-pend','⏳ New'],accepted:['ob-accept','✅ Accepted'],ironing:['ob-iron','♨️ Ironing'],ready:['ob-ready','📦 Ready'],out_for_delivery:['ob-ready','🚀 Delivering'],delivered:['ob-done','🎉 Delivered'],rejected:['ob-reject','❌ Rejected']};
-  var r=map[s]||['ob-pend',s];
-  return '<span class="obadge '+r[0]+'">'+r[1]+'</span>';
+function getFiltered() {
+  if (currentFilter === 'new')    return allOrders.filter(function(o){ return o.status === 'placed' || o.status === 'pending_vendor'; });
+  if (currentFilter === 'active') return allOrders.filter(function(o){ return ['accepted','ironing','ready','out_for_delivery'].includes(o.status); });
+  if (currentFilter === 'done')   return allOrders.filter(function(o){ return ['delivered','rejected'].includes(o.status); });
+  return allOrders;
 }
 
-function getFilteredOrders(){
-  if(currentFilter==='new') return ORDERS.filter(function(o){return o.status==='pending_vendor';});
-  if(currentFilter==='active') return ORDERS.filter(function(o){return ['accepted','ironing','ready','out_for_delivery'].includes(o.status);});
-  if(currentFilter==='done') return ORDERS.filter(function(o){return ['delivered','rejected'].includes(o.status);});
-  return ORDERS;
+function statusBadge(s) {
+  var map = { placed:['ob-pend','⏳ New'], pending_vendor:['ob-pend','⏳ New'], accepted:['ob-accept','✅ Accepted'], ironing:['ob-iron','♨️ Ironing'], ready:['ob-ready','📦 Ready'], out_for_delivery:['ob-ready','🚀 Delivering'], delivered:['ob-done','🎉 Delivered'], rejected:['ob-reject','❌ Rejected'] };
+  var r = map[s] || ['ob-pend', s];
+  return '<span class="obadge ' + r[0] + '">' + r[1] + '</span>';
 }
 
-function renderOrders(){
-  var filtered=getFilteredOrders();
-  var pending=ORDERS.filter(function(o){return o.status==='pending_vendor';}).length;
-  var today=ORDERS.filter(function(o){return ['accepted','ironing','ready','out_for_delivery','delivered'].includes(o.status);}).length;
-  var earn=ORDERS.filter(function(o){return o.status==='delivered';}).reduce(function(a,o){return a+o.amt;},0);
-  var allRatings=vendorRatings.concat([]);
-  var avgRating=allRatings.length?((allRatings.reduce(function(a,r){return a+(r.rider||0);},0)/allRatings.length).toFixed(1)):' — ';
-  document.getElementById('stPending').textContent=pending;
-  document.getElementById('stToday').textContent=today;
-  document.getElementById('stEarn').textContent='₹'+earn;
-  document.getElementById('stRating').textContent=avgRating!=' — '?avgRating+'⭐':' — ';
-  document.getElementById('notifDot').textContent=pending;
+function renderOrders() {
+  var pending  = allOrders.filter(function(o){ return o.status === 'placed' || o.status === 'pending_vendor'; }).length;
+  var today    = allOrders.filter(function(o){ return ['accepted','ironing','ready','out_for_delivery','delivered'].includes(o.status); }).length;
+  var earned   = allOrders.filter(function(o){ return o.status === 'delivered'; }).reduce(function(a,o){ return a + (o.total || 0); }, 0);
+  document.getElementById('stPending').textContent = pending;
+  document.getElementById('stToday').textContent   = today;
+  document.getElementById('stEarn').textContent    = '₹' + earned;
+  document.getElementById('notifDot').textContent  = pending;
 
-  if(filtered.length===0){
-    document.getElementById('ordersWrap').innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--slate)"><div style="font-size:3rem;margin-bottom:12px">'+(currentFilter==='new'?'🎉':'📭')+'</div><div style="font-weight:700;color:var(--ink);margin-bottom:6px">'+(currentFilter==='new'?'No new orders right now':'No orders here')+'</div><div style="font-size:0.82rem">'+( currentFilter==='new'?'New orders appear here instantly':'Check other tabs')+'</div></div>';
+  var filtered = getFiltered();
+  if (!filtered.length) {
+    var msgs = { new: ['🎉', 'No new orders right now', 'New orders appear here instantly'], active: ['📭', 'No active orders', 'Check other tabs'], done: ['✅', 'No completed orders yet', 'Completed orders appear here'] };
+    var m = msgs[currentFilter] || ['📭', 'No orders', ''];
+    document.getElementById('ordersWrap').innerHTML = '<div class="empty-state"><div class="ico">' + m[0] + '</div><div style="font-weight:700;color:var(--ink);margin-bottom:6px">' + m[1] + '</div><div style="font-size:0.82rem">' + m[2] + '</div></div>';
     return;
   }
 
-  document.getElementById('ordersWrap').innerHTML=filtered.map(function(o){
-    var timerHtml=o.status==='pending_vendor'?'<div style="background:#fef9ec;border:1px solid #fde68a;border-radius:10px;padding:10px 12px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div style="font-size:0.72rem;font-weight:700;color:#d97706">⏳ Time to accept</div><div style="font-family:Syne,sans-serif;font-weight:800;font-size:1rem;color:#d97706" id="otimer_'+o.id+'">15:00</div></div><div style="height:4px;background:#fde68a;border-radius:2px;overflow:hidden"><div id="ofill_'+o.id+'" style="height:100%;background:#f59e0b;width:100%;transition:width 1s linear"></div></div></div>':'';
+  document.getElementById('ordersWrap').innerHTML = filtered.map(function(o) {
+    var dispId   = 'DW' + (o._id || '').slice(-6).toUpperCase();
+    var itemsTxt = (o.items || []).map(function(i){ return (i.quantity||i.qty) + '× ' + (i.label||i.name); }).join(', ');
+    var dateStr  = o.createdAt ? new Date(o.createdAt).toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'}) : '';
+    var custName = (o.customer && o.customer.name) || 'Customer';
+    var custPhone = (o.customer && o.customer.phone) || '';
 
-    var photoReceived=o.status==='accepted'?'<div class="photo-sec"><div class="photo-sec-title">📸 Clothes Received — Upload Photos <span style="color:var(--red)">*Required</span></div><div class="photo-sec-sub">Take photos before starting ironing to verify item condition.</div><div class="photo-row"><div class="photo-thumb" onclick="triggerPhoto(\'vp_'+o.id+'_a\')" id="vpt_'+o.id+'_a"><div class="pt-ico">👕</div><div class="pt-lbl">Clothes</div><input type="file" id="vp_'+o.id+'_a" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this,\'vpt_'+o.id+'_a\',\'r'+o.id+'\')"/></div><div class="photo-thumb" onclick="triggerPhoto(\'vp_'+o.id+'_b\')" id="vpt_'+o.id+'_b"><div class="pt-ico">🔍</div><div class="pt-lbl">Damage?</div><input type="file" id="vp_'+o.id+'_b" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this,\'vpt_'+o.id+'_b\',\'r'+o.id+'\')"/></div><div class="photo-thumb" onclick="triggerPhoto(\'vp_'+o.id+'_c\')" id="vpt_'+o.id+'_c"><div class="pt-ico">🏷️</div><div class="pt-lbl">Tags</div><input type="file" id="vp_'+o.id+'_c" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this,\'vpt_'+o.id+'_c\',\'r'+o.id+'\')"/></div><div class="photo-thumb" onclick="triggerPhoto(\'vp_'+o.id+'_d\')" id="vpt_'+o.id+'_d"><div class="pt-ico">📷</div><div class="pt-lbl">Extra</div><input type="file" id="vp_'+o.id+'_d" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this,\'vpt_'+o.id+'_d\',\'r'+o.id+'\')"/></div></div><div class="photo-warn" id="pwarn_r'+o.id+'">⚠️ Upload at least 1 photo before starting ironing</div></div><button class="act-btn act-update" style="margin-top:10px" onclick="startIroning(\''+o.id+'\')">♨️ Start Ironing →</button>':'';
+    var timerHtml = (o.status === 'pending_vendor' || o.status === 'placed')
+      ? '<div style="background:#fef9ec;border:1px solid #fde68a;border-radius:10px;padding:10px 12px;margin-bottom:10px">'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+        + '<div style="font-size:0.72rem;font-weight:700;color:#d97706">⏳ Time to accept</div>'
+        + '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1rem;color:#d97706" id="otimer_' + o._id + '">15:00</div>'
+        + '</div><div style="height:4px;background:#fde68a;border-radius:2px;overflow:hidden">'
+        + '<div id="ofill_' + o._id + '" style="height:100%;background:#f59e0b;width:100%;transition:width 1s linear"></div></div></div>'
+      : '';
 
-    var photoIroned=o.status==='ironing'?'<div class="photo-sec"><div class="photo-sec-title">📸 Ironing Done — Upload Photos <span style="color:var(--red)">*Required</span></div><div class="photo-sec-sub">Take photos of freshly ironed clothes before handing to rider.</div><div class="photo-row"><div class="photo-thumb" onclick="triggerPhoto(\'vp2_'+o.id+'_a\')" id="vpt2_'+o.id+'_a"><div class="pt-ico">✅</div><div class="pt-lbl">Ironed</div><input type="file" id="vp2_'+o.id+'_a" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this,\'vpt2_'+o.id+'_a\',\'i'+o.id+'\')"/></div><div class="photo-thumb" onclick="triggerPhoto(\'vp2_'+o.id+'_b\')" id="vpt2_'+o.id+'_b"><div class="pt-ico">👔</div><div class="pt-lbl">Folded</div><input type="file" id="vp2_'+o.id+'_b" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this,\'vpt2_'+o.id+'_b\',\'i'+o.id+'\')"/></div><div class="photo-thumb" onclick="triggerPhoto(\'vp2_'+o.id+'_c\')" id="vpt2_'+o.id+'_c"><div class="pt-ico">📦</div><div class="pt-lbl">Packed</div><input type="file" id="vp2_'+o.id+'_c" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this,\'vpt2_'+o.id+'_c\',\'i'+o.id+'\')"/></div><div class="photo-thumb" onclick="triggerPhoto(\'vp2_'+o.id+'_d\')" id="vpt2_'+o.id+'_d"><div class="pt-ico">📷</div><div class="pt-lbl">Extra</div><input type="file" id="vp2_'+o.id+'_d" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(this,\'vpt2_'+o.id+'_d\',\'i'+o.id+'\')"/></div></div><div class="photo-warn" id="pwarn_i'+o.id+'">⚠️ Upload at least 1 photo before marking ready</div></div><button class="act-btn act-ready" style="margin-top:10px" onclick="markReady(\''+o.id+'\')">✅ Mark Ready for Delivery →</button>':'';
+    var actionHtml = '';
+    if (o.status === 'placed' || o.status === 'pending_vendor') {
+      actionHtml = '<div class="action-row">'
+        + '<button class="act-btn act-accept" onclick="acceptOrder(\'' + o._id + '\')">✅ Accept</button>'
+        + '<button class="act-btn act-reject" onclick="openRejectModal(\'' + o._id + '\')">❌ Reject</button>'
+        + '</div>';
+    } else if (o.status === 'accepted') {
+      actionHtml = '<button class="act-btn act-update" style="margin-top:10px;width:100%" onclick="updateStatus(\'' + o._id + '\',\'ironing\')">♨️ Start Ironing →</button>';
+    } else if (o.status === 'ironing') {
+      actionHtml = '<button class="act-btn act-ready" style="margin-top:10px;width:100%" onclick="updateStatus(\'' + o._id + '\',\'ready\')">✅ Mark Ready for Delivery →</button>';
+    } else if (o.status === 'ready') {
+      actionHtml = '<button class="act-btn act-update" style="margin-top:10px;width:100%" onclick="updateStatus(\'' + o._id + '\',\'out_for_delivery\')">🚀 Handed to Rider</button>';
+    }
 
-    var rateBtn=o.status==='delivered'&&!o.rated?'<button class="act-btn act-update" style="margin-top:10px;background:var(--gold);color:var(--ink)" onclick="openRatingModal(\''+o.id+'\')">⭐ Rate Rider & Customer</button>':'';
-    var ratedBadge=o.status==='delivered'&&o.rated?'<div style="text-align:center;margin-top:10px;font-size:0.78rem;color:var(--green);font-weight:600">✅ You rated this order</div>':'';
-
-    return '<div class="ocard">'+
-      '<div class="ocard-top"><div><div class="onum">'+o.num+' · '+o.time+'</div><div class="ocust">'+o.cust+'</div><div class="ophone">📞 +91 '+o.phone+'</div></div>'+statusBadge(o.status)+'</div>'+
-      timerHtml+
-      '<div class="odetail-row">🧺 '+o.items+'</div>'+
-      '<div class="odetail-row">📍 '+o.addr+'</div>'+
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0">'+
-        '<div class="oamt">₹'+o.amt+'</div>'+
-        '<div class="otime-pill">⏰ '+o.slot+'</div>'+
-      '</div>'+
-      (o.status==='pending_vendor'?'<div class="action-row"><button class="act-btn act-accept" onclick="acceptOrder(\''+o.id+'\')">✅ Accept</button><button class="act-btn act-reject" onclick="openRejectModal(\''+o.id+'\')">❌ Reject</button></div>':'')+
-      photoReceived+photoIroned+
-      (o.status==='ready'?'<button class="act-btn act-update" style="margin-top:10px;width:100%" onclick="updateStatus(\''+o.id+'\',\'out_for_delivery\')">🚀 Handed to Rider</button>':'')+
-      rateBtn+ratedBadge+
-    '</div>';
+    return '<div class="ocard">'
+      + '<div class="ocard-top"><div>'
+      + '<div class="onum">#' + dispId + ' · ' + dateStr + '</div>'
+      + '<div class="ocust">' + custName + '</div>'
+      + (custPhone ? '<div class="ophone">📞 +91 ' + custPhone + '</div>' : '')
+      + '</div>' + statusBadge(o.status) + '</div>'
+      + timerHtml
+      + '<div class="odetail-row">🧺 ' + itemsTxt + '</div>'
+      + '<div class="odetail-row">📍 ' + (o.pickupAddress || o.address || '') + '</div>'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0">'
+      + '<div class="oamt">₹' + (o.totalAmount||o.total || 0) + '</div>'
+      + '<div class="otime-pill">⏰ ' + (o.pickupSlot || o.slot || '') + '</div>'
+      + '</div>'
+      + actionHtml
+      + '</div>';
   }).join('');
 
   // Start timers for pending orders
-  filtered.filter(function(o){return o.status==='pending_vendor';}).forEach(function(o){startTimer(o.id);});
+  filtered.filter(function(o){ return o.status === 'pending_vendor'; }).forEach(function(o){ startTimer(o._id); });
 }
 
-// ── ORDER ACTIONS ──
-function acceptOrder(id){
-  var o=ORDERS.find(function(x){return x.id===id;});
-  if(!o) return;
-  if(orderTimers[id]){clearInterval(orderTimers[id].interval);delete orderTimers[id];}
-  o.status='accepted'; renderOrders();
-  toast('✅ Order '+o.num+' accepted!');
-  setTimeout(function(){filterOrders('active');},1000);
+// ─── ORDER ACTIONS — real API ─────────────────────
+function acceptOrder(id) {
+  var token = getToken();
+  fetch(API + '/api/orders/' + id + '/status', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ status: 'accepted', note: 'Vendor accepted the order' })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (!data.success) { toast(data.message || 'Failed to accept'); return; }
+    if (orderTimers[id]) { clearInterval(orderTimers[id].interval); delete orderTimers[id]; }
+    var o = allOrders.find(function(x){ return x._id === id; });
+    if (o) o.status = 'accepted';
+    renderOrders();
+    toast('✅ Order accepted!');
+    setTimeout(function(){ filterOrders('active'); }, 1000);
+  })
+  .catch(function(){ toast('Network error. Try again.'); });
 }
 
-function openRejectModal(id){
-  currentOrderId=id;
-  document.getElementById('rejectReason').value='';
+function openRejectModal(id) {
+  currentOrderId = id;
+  document.getElementById('rejectReason').value = '';
   document.getElementById('rejectModal').classList.add('open');
 }
-function confirmReject(){
-  var o=ORDERS.find(function(x){return x.id===currentOrderId;});
-  if(!o) return;
-  if(orderTimers[currentOrderId]){clearInterval(orderTimers[currentOrderId].interval);delete orderTimers[currentOrderId];}
-  o.status='rejected';
-  closeModal('rejectModal');
-  renderOrders();
-  toast('Order rejected.');
+
+function confirmReject() {
+  var reason = document.getElementById('rejectReason').value.trim();
+  var token  = getToken();
+  fetch(API + '/api/orders/' + currentOrderId + '/status', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ status: 'rejected', reason: reason })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    closeModal('rejectModal');
+    if (data.success) {
+      if (orderTimers[currentOrderId]) { clearInterval(orderTimers[currentOrderId].interval); delete orderTimers[currentOrderId]; }
+      var o = allOrders.find(function(x){ return x._id === currentOrderId; });
+      if (o) o.status = 'rejected';
+      renderOrders();
+      toast('Order rejected.');
+    } else { toast(data.message || 'Failed to reject'); }
+  })
+  .catch(function(){ closeModal('rejectModal'); toast('Network error. Try again.'); });
 }
 
-function updateStatus(id,status){
-  var o=ORDERS.find(function(x){return x.id===id;});
-  if(!o) return;
-  o.status=status; renderOrders();
-  closeModal('statusModal');
-  toast('Status updated!');
+function updateStatus(id, status) {
+  var token = getToken();
+  var endpointMap = { ironing:'ironing', ready:'ready', out_for_delivery:'out_for_delivery' };
+  fetch(API + '/api/orders/' + id + '/status', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ status: status })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (!data.success) { toast(data.message || 'Update failed'); return; }
+    var o = allOrders.find(function(x){ return x._id === id; });
+    if (o) o.status = status;
+    renderOrders();
+    toast('✅ Status updated!');
+  })
+  .catch(function(){ toast('Network error. Try again.'); });
 }
 
-// ── PHOTO FUNCTIONS ──
-function triggerPhoto(inputId){document.getElementById(inputId).click();}
-function handlePhoto(input,thumbId,group){
-  var file=input.files[0];if(!file) return;
-  var reader=new FileReader();
-  reader.onload=function(e){
-    var thumb=document.getElementById(thumbId);
-    if(!thumb) return;
-    var img=thumb.querySelector('img');
-    if(!img){img=document.createElement('img');thumb.appendChild(img);}
-    img.src=e.target.result;
-    thumb.classList.add('done');
-    if(!thumb.querySelector('.pt-tick')){var tick=document.createElement('div');tick.className='pt-tick';tick.textContent='✓';thumb.appendChild(tick);}
-    vendorPhotos[group]=vendorPhotos[group]||[];
-    vendorPhotos[group].push(thumbId);
-    toast('📸 Photo saved!');
-  };
-  reader.readAsDataURL(file);
-}
-function hasPhotos(group){return vendorPhotos[group]&&vendorPhotos[group].length>0;}
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-function startIroning(id){
-  if(!hasPhotos('r'+id)){
-    var w=document.getElementById('pwarn_r'+id);if(w) w.classList.add('show');
-    toast('📸 Please upload at least 1 photo first!');return;
-  }
-  document.getElementById('pwarn_r'+id).classList.remove('show');
-  var o=ORDERS.find(function(x){return x.id===id;});
-  if(!o) return;
-  o.status='ironing'; renderOrders();
-  toast('♨️ Ironing started!');
-}
-function markReady(id){
-  if(!hasPhotos('i'+id)){
-    var w=document.getElementById('pwarn_i'+id);if(w) w.classList.add('show');
-    toast('📸 Please upload at least 1 photo first!');return;
-  }
-  document.getElementById('pwarn_i'+id).classList.remove('show');
-  var o=ORDERS.find(function(x){return x.id===id;});
-  if(!o) return;
-  o.status='ready'; renderOrders();
-  toast('✅ Order ready for pickup!');
+// ─── ORDER TIMERS ─────────────────────────────────
+function startTimer(orderId) {
+  if (orderTimers[orderId]) return;
+  orderTimers[orderId] = { secs: TIMER_MAX };
+  orderTimers[orderId].interval = setInterval(function() {
+    orderTimers[orderId].secs--;
+    var s   = orderTimers[orderId].secs;
+    var el  = document.getElementById('otimer_' + orderId);
+    var fill= document.getElementById('ofill_'  + orderId);
+    if (el) {
+      var m = Math.floor(s/60), sec = s%60;
+      el.textContent  = ('0'+m).slice(-2) + ':' + ('0'+sec).slice(-2);
+      el.style.color  = s <= 120 ? '#dc2626' : '#d97706';
+    }
+    if (fill) { fill.style.width = ((s/TIMER_MAX)*100) + '%'; fill.style.background = s <= 120 ? '#dc2626' : '#f59e0b'; }
+    if (s <= 0) {
+      clearInterval(orderTimers[orderId].interval);
+      delete orderTimers[orderId];
+      // Auto-reject via API
+      var token = getToken();
+      fetch(API + '/api/orders/' + orderId + '/status', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ status: 'rejected', reason: 'Auto-rejected: vendor did not respond in 15 minutes' })
+      }).then(function(){ loadOrders(); });
+      toast('⏰ Order auto-rejected — timeout');
+    }
+  }, 1000);
 }
 
-// ── RATING MODAL ──
-function setStar(type,val){
-  starRatings[type]=val;
-  var map={rider:'riderStars',cust:'custStars'};
-  document.getElementById(map[type]).querySelectorAll('.star').forEach(function(s,i){s.classList.toggle('on',i<val);});
-}
-function openRatingModal(id){
-  currentOrderId=id;
-  var o=ORDERS.find(function(x){return x.id===id;});
-  document.getElementById('ratingModalSub').textContent='Rate rider & customer for order '+(o?o.num:'');
-  starRatings={rider:0,cust:0};
-  document.querySelectorAll('.star').forEach(function(s){s.classList.remove('on');});
-  document.querySelectorAll('.rtag').forEach(function(t){t.classList.remove('on');});
-  document.getElementById('riderFeedback').value='';
-  document.getElementById('custFeedback').value='';
-  document.getElementById('ratingModal').classList.add('open');
-}
-function submitVendorRating(){
-  if(!starRatings.rider){toast('Please rate the rider');return;}
-  if(!starRatings.cust){toast('Please rate the customer');return;}
-  var o=ORDERS.find(function(x){return x.id===currentOrderId;});
-  var rating={orderId:currentOrderId,rider:starRatings.rider,cust:starRatings.cust,riderFeedback:document.getElementById('riderFeedback').value,custFeedback:document.getElementById('custFeedback').value,at:new Date().toISOString()};
-  vendorRatings.push(rating);
-  localStorage.setItem('dw_v_ratings',JSON.stringify(vendorRatings));
-  if(o) o.rated=true;
-  closeRatingModal();
-  renderOrders();
-  toast('⭐ Rating submitted! Thank you.');
-}
-function closeRatingModal(){document.getElementById('ratingModal').classList.remove('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-
-// ── ANALYTICS ──
-function renderAnalytics(){
-  var delivered=ORDERS.filter(function(o){return o.status==='delivered';});
-  var earn=delivered.reduce(function(a,o){return a+o.amt;},0);
-  var avgR=vendorRatings.length?(vendorRatings.reduce(function(a,r){return a+r.rider;},0)/vendorRatings.length).toFixed(1):'—';
-  document.getElementById('anaEarn').textContent='₹'+earn;
-  document.getElementById('anaOrders').textContent=delivered.length+' orders completed';
-  document.getElementById('anaToday').textContent='₹'+Math.round(earn*0.3);
-  document.getElementById('anaWeek').textContent='₹'+earn;
-  document.getElementById('anaRating').textContent=avgR!=='—'?avgR+'⭐':'—';
-  // Bar chart
-  var vals=[3,5,2,7,4,6,1];
-  var max=Math.max.apply(null,vals);
-  document.getElementById('barChart').innerHTML=vals.map(function(v){
-    return '<div class="bar-wrap"><div class="bar-val">'+v+'</div><div class="bar" style="height:'+(v/max*64)+'px"></div></div>';
+// ─── ANALYTICS ───────────────────────────────────
+function renderAnalytics() {
+  var delivered = allOrders.filter(function(o){ return o.status === 'delivered'; });
+  var earned    = delivered.reduce(function(a,o){ return a + (o.total||0); }, 0);
+  document.getElementById('anaEarn').textContent   = '₹' + earned;
+  document.getElementById('anaOrders').textContent = delivered.length + ' orders completed';
+  document.getElementById('anaToday').textContent  = '₹0';
+  document.getElementById('anaWeek').textContent   = '₹' + earned;
+  document.getElementById('anaRating').textContent = '—';
+  var vals = [0,0,0,0,0,0,0], max = 1;
+  document.getElementById('barChart').innerHTML = vals.map(function(v){
+    return '<div class="bar-wrap"><div class="bar-val">' + v + '</div><div class="bar" style="height:' + (v/max*64) + 'px"></div></div>';
   }).join('');
-  // Reviews
-  if(vendorRatings.length>0){
-    var html=vendorRatings.slice(-3).reverse().map(function(r){
-      return '<div class="review-item"><div style="flex:1"><div class="ri-stars">'+'★'.repeat(r.rider)+'☆'.repeat(5-r.rider)+'</div><div class="ri-text">'+(r.riderFeedback||'Good service')+'</div><div class="ri-by">Order '+r.orderId+' · '+new Date(r.at).toLocaleDateString()+'</div></div></div>';
-    }).join('');
-    document.getElementById('reviewsList').innerHTML=html;
-  }
 }
 
-// ── TOAST ──
-function toast(msg){var el=document.getElementById('toastEl');el.textContent=msg;el.classList.add('show');setTimeout(function(){el.classList.remove('show');},2600);}
+// ─── TOAST ───────────────────────────────────────
+function toast(msg) {
+  var el = document.getElementById('toastEl');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 2600);
+}
 
-// ── BOOT ──
-(function(){
-  try{
-    var sess=localStorage.getItem('dw_vsess');
-    if(sess){var v=JSON.parse(sess);if(v&&v.phone){loginVendor(v);return;}}
-  }catch(e){}
+// ─── BOOT ────────────────────────────────────────
+(function() {
+  var token = getToken();
+  var v     = getVendorData();
+  if (token && v) {
+    loginVendor(v, null); // shop data will be fetched in loadOrders
+  }
 })();
 </script>
 </body>
