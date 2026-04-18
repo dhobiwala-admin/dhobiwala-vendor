@@ -797,7 +797,7 @@ function filterOrders(f) {
 
 function getFiltered() {
   if (currentFilter==='new')    return allOrders.filter(function(o){ return o.status==='placed'||o.status==='pending_vendor'; });
-  if (currentFilter==='active') return allOrders.filter(function(o){ return ['accepted','processing','partially_delivered'].indexOf(o.status)>-1; });
+  if (currentFilter==='active') return allOrders.filter(function(o){ return ['accepted','pickup_scheduled','picked_up','processing','partially_delivered'].indexOf(o.status)>-1; });
   if (currentFilter==='done')   return allOrders.filter(function(o){ return o.status==='delivered'||o.status==='rejected'||o.status==='cancelled'; });
   return allOrders;
 }
@@ -805,7 +805,9 @@ function getFiltered() {
 var STATUS_BADGE = {
   placed:              ['ob-pend',  '⏳ New'],
   pending_vendor:      ['ob-pend',  '⏳ New'],
-  accepted:            ['ob-accept','✅ Accepted'],
+  accepted:            ['ob-accept','✅ Accepted — Waiting for rider pickup'],
+  pickup_scheduled:    ['ob-accept','🏍 Rider assigned — Coming to pickup'],
+  picked_up:           ['ob-iron',  '📦 Clothes received — Ready to process'],
   processing:          ['ob-iron',  '♨️ Processing'],
   partially_delivered: ['ob-iron',  '🚀 Partial'],
   delivered:           ['ob-done',  '🎉 Done'],
@@ -816,7 +818,7 @@ var STATUS_BADGE = {
 function renderOrders() {
   var filtered=getFiltered();
   var pending=allOrders.filter(function(o){ return o.status==='placed'||o.status==='pending_vendor'; }).length;
-  var today  =allOrders.filter(function(o){ return ['accepted','processing','partially_delivered','delivered'].indexOf(o.status)>-1; }).length;
+  var today  =allOrders.filter(function(o){ return ['accepted','pickup_scheduled','picked_up','processing','partially_delivered','delivered'].indexOf(o.status)>-1; }).length;
   var earned =allOrders.filter(function(o){ return o.status==='delivered'; }).reduce(function(a,o){ return a+(o.totalAmount||0); },0);
   document.getElementById('stPending').textContent=pending;
   document.getElementById('stToday').textContent=today;
@@ -888,7 +890,7 @@ function renderOrders() {
           +'<div class="item-row-tat">'+tat.badge+' · '+tat.label+'</div>'
           +'</div>';
         // Status button for active orders
-        if (o.status==='accepted'||o.status==='processing') {
+        if (o.status==='picked_up'||o.status==='processing') {
           var iBtn = document.createElement('button');
           var ist  = item.itemStatus||'pending';
           var nextStatus = ist==='pending'?'processing':ist==='processing'?'ready':null;
@@ -940,9 +942,16 @@ function renderOrders() {
       actRow.appendChild(rejBtn);
       card.appendChild(actRow);
     } else if (o.status==='accepted') {
+      // Waiting for rider to pick up — show info only
+      var waitDiv = document.createElement('div');
+      waitDiv.style.cssText='background:#fef9ec;border:1px solid #fde68a;border-radius:10px;padding:10px 12px;font-size:0.78rem;color:#d97706;font-weight:600;margin-top:8px;text-align:center';
+      waitDiv.textContent='🏍 Rider assigned — waiting to pick up clothes from customer';
+      card.appendChild(waitDiv);
+    } else if (o.status==='picked_up') {
+      // Rider has delivered clothes to shop — NOW vendor can start processing
       var startBtn = document.createElement('button');
       startBtn.className = 'act-btn act-update';
-      startBtn.textContent = '♨️ Start Processing All Items →';
+      startBtn.textContent = '♨️ Start Processing — Clothes Received!';
       startBtn.addEventListener('click', function(){ updateStatus(o._id,'processing'); });
       card.appendChild(startBtn);
     }
