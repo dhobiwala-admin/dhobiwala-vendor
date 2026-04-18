@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>DhobiWala — Vendor Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--ink:#0a0a0f;--gold:#e8a020;--green:#16a34a;--red:#dc2626;--blue:#1d4ed8;--slate:#64748b;--border:#e8e4dc;--light:#f5f0e8;--cream:#faf8f3;--white:#fff}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;margin:0 auto;min-height:100vh}
+.page{display:none;min-height:100vh;flex-direction:column}
+.page.show{display:flex}
+.auth-hero{background:var(--ink);padding:44px 24px 36px;position:relative;overflow:hidden}
+.auth-hero::after{content:'';position:absolute;bottom:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(232,160,32,0.07)}
+.wordmark{font-family:'Syne',sans-serif;font-weight:800;font-size:1.7rem;color:#fff;margin-bottom:4px}
+.wordmark span{color:var(--gold)}
+.auth-sub{color:rgba(255,255,255,0.35);font-size:0.82rem}
+.auth-body{padding:28px 24px;flex:1;background:var(--cream)}
+.tab-row{display:flex;background:var(--light);border-radius:12px;padding:4px;margin-bottom:24px}
+.tab-btn{flex:1;padding:11px 8px;border:none;border-radius:9px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.2s;background:transparent;color:var(--slate)}
+.tab-btn.active{background:var(--ink);color:#fff;font-weight:700}
+.form-wrap{display:none}
+.form-wrap.show{display:block}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:0.68rem;font-weight:700;color:var(--slate);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:7px}
+.finput{width:100%;padding:13px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:0.92rem;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);outline:none}
+.finput:focus{border-color:var(--gold)}
+.pass-wrap{position:relative}
+.pass-wrap .finput{padding-right:48px}
+.eye-btn{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;padding:4px}
+.err-box{background:#fff0f0;border:1px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:0.82rem;color:var(--red);margin-bottom:14px;display:none}
+.cta{width:100%;padding:15px;border:none;border-radius:14px;font-size:0.95rem;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;margin-top:4px;transition:opacity 0.2s}
+.cta:disabled{opacity:0.6;cursor:not-allowed}
+.cta-dark{background:var(--ink);color:#fff}
+.cta-gold{background:var(--gold);color:var(--ink)}
+.switch-hint{text-align:center;margin-top:16px;font-size:0.82rem;color:var(--slate)}
+.switch-hint a{color:var(--gold);font-weight:700;cursor:pointer}
+.dash-header{background:var(--ink);padding:18px 20px 20px}
+.dash-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.dash-mark{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:#fff}
+.dash-mark span{color:var(--gold)}
+.header-right{display:flex;align-items:center;gap:10px}
+.notif-dot{width:22px;height:22px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700}
+.dash-shop-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:2px}
+.dash-welcome{color:rgba(255,255,255,0.45);font-size:0.78rem}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 16px}
+.stat-box{background:var(--white);border-radius:14px;padding:12px 8px;text-align:center;border:1px solid var(--border)}
+.stat-val{font-family:'Syne',sans-serif;font-weight:800;color:var(--ink);font-size:1.2rem}
+.stat-lbl{font-size:0.6rem;color:var(--slate);margin-top:2px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
+.stat-val.green{color:var(--green)}
+.stat-val.gold{color:var(--gold)}
+.status-card{background:var(--white);border-radius:16px;margin:0 16px 12px;padding:16px;border:1px solid var(--border)}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sc-title{font-family:'Syne',sans-serif;font-weight:700;color:var(--ink);font-size:0.9rem}
+.toggle-sw{width:52px;height:28px;border-radius:14px;background:#e2e8f0;cursor:pointer;position:relative;transition:background 0.3s;border:none;flex-shrink:0}
+.toggle-sw.on{background:var(--green)}
+.toggle-th{width:22px;height:22px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:left 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.2)}
+.toggle-sw.on .toggle-th{left:27px}
+.status-ind{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.si-dot{width:8px;height:8px;border-radius:50%;background:#e2e8f0}
+.si-dot.open{background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+.si-text{font-size:0.8rem;color:var(--slate);font-weight:600}
+.hours-row{display:flex;gap:8px;align-items:center}
+.hours-lbl{font-size:0.72rem;color:var(--slate);font-weight:600;white-space:nowrap}
+.hours-inp{padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:0.82rem;font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--white);flex:1}
+.save-btn-sm{padding:8px 14px;background:var(--ink);color:#fff;border:none;border-radius:8px;font-weight:700;font-size:0.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.order-tabs{display:flex;padding:0 16px;margin-bottom:12px;gap:0}
+.otab{flex:1;padding:9px;border:none;border-bottom:3px solid var(--border);font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.78rem;color:var(--slate);background:transparent;cursor:pointer;text-align:center}
+.otab.on{border-bottom-color:var(--gold);color:var(--ink);font-weight:700}
+.orders-wrap{padding:0 16px;display:flex;flex-direction:column;gap:12px;padding-bottom:90px}
+.ocard{background:var(--white);border-radius:16px;padding:16px;border:1px solid var(--border)}
+.ocard-top{display:flex;justify-content:space-between;margin-bottom:10px}
+.onum{font-size:0.7rem;color:var(--slate);margin-bottom:2px}
+.ocust{font-family:'Syne',sans-serif;font-weight:700;color:var(--ink);font-size:0.9rem}
+.ophone{font-size:0.72rem;color:var(--slate);margin-top:2px}
+.obadge{border-radius:20px;padding:3px 10px;font-size:0.68rem;font-weight:700}
+.ob-pend{background:#fef9ec;color:#b45309}
+.ob-accept{background:#f0fdf4;color:var(--green)}
+.ob-iron{background:#eff6ff;color:var(--blue)}
+.ob-ready{background:#f0fdf4;color:var(--green)}
+.ob-done{background:#f0fdf4;color:var(--green)}
+.ob-reject{background:#fee2e2;color:var(--red)}
+.odetail-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;font-size:0.8rem;color:var(--slate)}
+.oamt{font-family:'Syne',sans-serif;font-weight:800;color:var(--ink);font-size:1rem}
+.otime-pill{background:var(--light);border-radius:6px;padding:3px 10px;font-size:0.7rem;font-weight:600;color:var(--ink)}
+.action-row{display:flex;gap:8px;margin-top:10px}
+.act-btn{flex:1;padding:10px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:0.82rem;cursor:pointer;transition:opacity 0.2s}
+.act-btn:disabled{opacity:0.6;cursor:not-allowed}
+.act-accept{background:var(--green);color:#fff}
+.act-reject{background:#fee2e2;color:var(--red);border:1px solid #fecaca}
+.act-update{background:var(--ink);color:#fff;width:100%}
+.act-ready{background:var(--green);color:#fff;width:100%}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:100;display:none;align-items:flex-end;justify-content:center}
+.modal-bg.open{display:flex}
+.modal-box{background:#fff;border-radius:20px 20px 0 0;padding:24px 20px 32px;width:100%;max-width:430px;max-height:85vh;overflow-y:auto}
+.modal-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:var(--ink);margin-bottom:4px}
+.modal-sub{font-size:0.78rem;color:var(--slate);margin-bottom:20px}
+.rating-ta{width:100%;padding:12px;border:1.5px solid var(--border);border-radius:10px;font-size:0.85rem;font-family:'DM Sans',sans-serif;resize:none;height:72px;outline:none;color:var(--ink)}
+.modal-submit{width:100%;padding:14px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.92rem;cursor:pointer;margin-top:4px}
+.modal-cancel{width:100%;padding:12px;background:var(--light);color:var(--slate);border:1px solid var(--border);border-radius:12px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;margin-top:8px}
+.analytics-wrap{padding:16px;padding-bottom:90px}
+.analytics-card{background:var(--white);border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid var(--border)}
+.ac-title{font-family:'Syne',sans-serif;font-weight:700;color:var(--ink);font-size:0.92rem;margin-bottom:14px}
+.earn-big{font-family:'Syne',sans-serif;font-weight:800;font-size:2.2rem;color:var(--ink);margin-bottom:4px}
+.earn-sub{font-size:0.75rem;color:var(--slate)}
+.bar-row{display:flex;align-items:flex-end;gap:6px;height:80px;margin:14px 0 6px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar{width:100%;border-radius:4px 4px 0 0;background:var(--gold);min-height:4px}
+.bar-lbl{font-size:0.6rem;color:var(--slate);font-weight:600}
+.bar-val{font-size:0.65rem;font-weight:700;color:var(--ink)}
+.profile-hero{background:var(--ink);padding:28px 20px 32px;text-align:center}
+.prof-ava{width:70px;height:70px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;color:var(--ink);margin:0 auto 12px}
+.prof-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:#fff;margin-bottom:4px}
+.prof-phone{font-size:0.78rem;color:rgba(255,255,255,0.4)}
+.pmenu{padding:16px;display:flex;flex-direction:column;gap:10px;padding-bottom:90px}
+.pmenu-item{background:var(--white);border-radius:14px;padding:14px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;border:1px solid var(--border)}
+.pi-ico{font-size:1.1rem;width:32px;text-align:center}
+.pi-lbl{font-weight:600;color:var(--ink);font-size:0.9rem;flex:1}
+.pi-arr{color:var(--slate);font-size:0.9rem}
+.pmenu-item.danger .pi-lbl{color:var(--red)}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--white);border-top:1px solid var(--border);display:flex;padding:10px 0 14px;z-index:20}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}
+.bnav-ico{font-size:1.2rem}
+.bnav-lbl{font-size:0.58rem;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.04em}
+.bnav-item.on .bnav-lbl{color:var(--ink)}
+.sup-card{background:var(--white);border-radius:16px;padding:18px;margin-bottom:12px;border:1px solid var(--border)}
+.sup-title{font-family:'Syne',sans-serif;font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:12px}
+.sup-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--cream);border-radius:10px;margin-bottom:8px;text-decoration:none;border:1px solid var(--border)}
+.sb-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0}
+.sb-lbl{font-weight:600;color:var(--ink);font-size:0.85rem}
+.sb-val{font-size:0.72rem;color:var(--slate);margin-top:1px}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 22px;border-radius:30px;font-size:0.82rem;font-weight:600;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;max-width:90%}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.empty-state{text-align:center;padding:40px 20px;color:var(--slate)}
+.empty-state .ico{font-size:3rem;margin-bottom:12px}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div class="page show" id="pgAuth">
+  <div class="auth-hero">
+    <div class="wordmark">Dhobi<span>Wala</span></div>
+    <div class="auth-sub">Vendor Portal · Rourkela</div>
+  </div>
+  <div class="auth-body">
+    <div class="tab-row">
+      <button class="tab-btn active" id="tbLogin" onclick="showTab('login')">Login</button>
+      <button class="tab-btn" id="tbReg" onclick="showTab('reg')">Register Shop</button>
+    </div>
+    <div class="err-box" id="authErr"></div>
+    <div class="form-wrap show" id="fmLogin">
+      <div class="field"><label>Phone Number</label><input class="finput" type="tel" id="lPhone" placeholder="98765 43210" maxlength="10"/></div>
+      <div class="field"><label>Password</label><div class="pass-wrap"><input class="finput" type="password" id="lPass" placeholder="Your password"/><button class="eye-btn" type="button" onclick="toggleEye('lPass',this)">👁</button></div></div>
+      <button class="cta cta-dark" id="btnLogin" onclick="doLogin()">Login to Dashboard →</button>
+      <div class="switch-hint">New vendor? <a onclick="showTab('reg')">Register shop</a></div>
+    </div>
+    <div class="form-wrap" id="fmReg">
+      <div class="field"><label>Shop Name</label><input class="finput" type="text" id="rShop" placeholder="e.g. Civil Iron Palace"/></div>
+      <div class="field"><label>Owner Name</label><input class="finput" type="text" id="rOwner" placeholder="Your full name"/></div>
+      <div class="field"><label>Phone Number</label><input class="finput" type="tel" id="rPhone" placeholder="98765 43210" maxlength="10"/></div>
+      <div class="field"><label>Area</label><input class="finput" type="text" id="rArea" placeholder="e.g. Civil Township, Sector 6"/></div>
+      <div class="field"><label>Shop Address</label><input class="finput" type="text" id="rAddress" placeholder="e.g. Plot 12, Sector 6, Civil Township"/></div>
+      <div class="field"><label>Pincode</label><input class="finput" type="tel" id="rPincode" placeholder="e.g. 769001" maxlength="6"/></div>
+      <div class="field"><label>Shop Phone</label><input class="finput" type="tel" id="rShopPhone" placeholder="98765 43210" maxlength="10"/></div>
+      <div class="field"><label>Password</label><div class="pass-wrap"><input class="finput" type="password" id="rPass" placeholder="Create password"/><button class="eye-btn" type="button" onclick="toggleEye('rPass',this)">👁</button></div></div>
+      <button class="cta cta-gold" id="btnReg" onclick="doRegister()">Register My Shop →</button>
+      <div class="switch-hint">Already registered? <a onclick="showTab('login')">Login</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="page" id="pgDash">
+  <div class="dash-header">
+    <div class="dash-top">
+      <div class="dash-mark">Dhobi<span>Wala</span></div>
+      <div class="header-right">
+        <div class="notif-dot" id="notifDot">0</div>
+        <div style="font-size:1.3rem;cursor:pointer" id="headerIco" onclick="go('pgProfile')">🟢</div>
+      </div>
+    </div>
+    <div class="dash-shop-name" id="dashShopName">Shop Name</div>
+    <div class="dash-welcome" id="dashWelcome">Good morning! 👋</div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-val" id="stPending">0</div><div class="stat-lbl">New</div></div>
+    <div class="stat-box"><div class="stat-val" id="stToday">0</div><div class="stat-lbl">Today</div></div>
+    <div class="stat-box"><div class="stat-val green" id="stEarn">₹0</div><div class="stat-lbl">Earned</div></div>
+    <div class="stat-box"><div class="stat-val gold" id="stRating">—</div><div class="stat-lbl">Rating</div></div>
+  </div>
+  <div class="status-card">
+    <div class="sc-top">
+      <div class="sc-title">🏪 Shop Status</div>
+      <button class="toggle-sw on" id="shopToggle" onclick="toggleShop()"><div class="toggle-th"></div></button>
+    </div>
+    <div class="status-ind"><div class="si-dot open" id="siDot"></div><div class="si-text" id="siText">Your shop is OPEN — accepting orders</div></div>
+    <div style="border-top:1px solid var(--border);padding-top:12px">
+      <div style="font-size:0.68rem;font-weight:700;color:var(--slate);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px">Shop Hours</div>
+      <div class="hours-row">
+        <div class="hours-lbl">Opens</div>
+        <input class="hours-inp" type="time" id="openTime" value="08:00"/>
+        <div class="hours-lbl">Closes</div>
+        <input class="hours-inp" type="time" id="closeTime" value="21:00"/>
+        <button class="save-btn-sm" onclick="saveHours()">Save</button>
+      </div>
+      <div id="hoursSaved" style="font-size:0.72rem;color:var(--green);margin-top:6px;display:none">✅ Hours saved!</div>
+    </div>
+  </div>
+  <div class="order-tabs">
+    <button class="otab on" id="ot-new" onclick="filterOrders('new')">🔔 New</button>
+    <button class="otab" id="ot-active" onclick="filterOrders('active')">⚡ Active</button>
+    <button class="otab" id="ot-done" onclick="filterOrders('done')">✅ Done</button>
+  </div>
+  <div class="orders-wrap" id="ordersWrap"><div class="empty-state"><div class="ico">🔄</div><div>Loading orders...</div></div></div>
+  <div class="bnav">
+    <div class="bnav-item on" onclick="go('pgDash')"><div class="bnav-ico">📋</div><div class="bnav-lbl">Orders</div></div>
+    <div class="bnav-item" onclick="go('pgAnalytics')"><div class="bnav-ico">📊</div><div class="bnav-lbl">Analytics</div></div>
+    <div class="bnav-item" onclick="go('pgSupport')"><div class="bnav-ico">💬</div><div class="bnav-lbl">Support</div></div>
+    <div class="bnav-item" onclick="go('pgProfile')"><div class="bnav-ico">👤</div><div class="bnav-lbl">Profile</div></div>
+  </div>
+</div>
+
+<!-- ANALYTICS -->
+<div class="page" id="pgAnalytics">
+  <div class="dash-header">
+    <div class="dash-top">
+      <div class="back-row" onclick="go('pgDash')" style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <div style="color:rgba(255,255,255,0.5)">←</div>
+        <div class="dash-mark">Dhobi<span>Wala</span></div>
+      </div>
+    </div>
+    <div class="dash-shop-name" id="anaShopName">Analytics</div>
+    <div class="dash-welcome">Performance overview</div>
+  </div>
+  <div class="analytics-wrap">
+    <div class="analytics-card">
+      <div class="ac-title">💰 Total Earnings</div>
+      <div class="earn-big" id="anaEarn">₹0</div>
+      <div class="earn-sub" id="anaOrders">0 orders completed</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px">
+        <div style="text-align:center;background:var(--cream);border-radius:10px;padding:10px">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:var(--ink)" id="anaToday">₹0</div>
+          <div style="font-size:0.65rem;color:var(--slate);margin-top:2px">Today</div>
+        </div>
+        <div style="text-align:center;background:var(--cream);border-radius:10px;padding:10px">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:var(--ink)" id="anaWeek">₹0</div>
+          <div style="font-size:0.65rem;color:var(--slate);margin-top:2px">This Week</div>
+        </div>
+        <div style="text-align:center;background:var(--cream);border-radius:10px;padding:10px">
+          <div style="font-family:'Syne',sans-serif;font-weight:800;color:var(--gold)" id="anaRating">—</div>
+          <div style="font-size:0.65rem;color:var(--slate);margin-top:2px">Avg Rating</div>
+        </div>
+      </div>
+    </div>
+    <div class="analytics-card">
+      <div class="ac-title">📅 Orders This Week</div>
+      <div class="bar-row" id="barChart"></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.62rem;color:var(--slate);font-weight:600">
+        <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+      </div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="bnav-item" onclick="go('pgDash')"><div class="bnav-ico">📋</div><div class="bnav-lbl">Orders</div></div>
+    <div class="bnav-item on"><div class="bnav-ico">📊</div><div class="bnav-lbl">Analytics</div></div>
+    <div class="bnav-item" onclick="go('pgSupport')"><div class="bnav-ico">💬</div><div class="bnav-lbl">Support</div></div>
+    <div class="bnav-item" onclick="go('pgProfile')"><div class="bnav-ico">👤</div><div class="bnav-lbl">Profile</div></div>
+  </div>
+</div>
+
+<!-- SUPPORT -->
+<div class="page" id="pgSupport">
+  <div class="dash-header">
+    <div class="dash-top">
+      <div class="back-row" onclick="go('pgDash')" style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <div style="color:rgba(255,255,255,0.5)">←</div>
+        <div class="dash-mark">Dhobi<span>Wala</span></div>
+      </div>
+    </div>
+    <div class="dash-shop-name">Help & Support</div>
+    <div class="dash-welcome">We respond within 2 hours</div>
+  </div>
+  <div style="padding:16px;padding-bottom:90px">
+    <div class="sup-card">
+      <div class="sup-title">📧 Vendor Support</div>
+      <a class="sup-btn" href="mailto:vendors@dhobiwala.in?subject=Vendor Support"><div class="sb-ico" style="background:#dbeafe;color:var(--blue)">📧</div><div><div class="sb-lbl">General Support</div><div class="sb-val">vendors@dhobiwala.in</div></div></a>
+      <a class="sup-btn" href="mailto:payments@dhobiwala.in?subject=Payment Query"><div class="sb-ico" style="background:#f0fdf4;color:var(--green)">💰</div><div><div class="sb-lbl">Payments & Settlement</div><div class="sb-val">payments@dhobiwala.in</div></div></a>
+    </div>
+    <div class="sup-card">
+      <div class="sup-title">❓ FAQs</div>
+      <div style="font-size:0.83rem;color:var(--slate);line-height:1.7">
+        <div style="font-weight:600;color:var(--ink);margin-bottom:3px">When do I get paid?</div>
+        <div style="margin-bottom:10px">Every Monday for previous week's orders, directly to your bank account.</div>
+        <div style="font-weight:600;color:var(--ink);margin-bottom:3px">What if I miss 3 orders?</div>
+        <div>24-hour suspension. Email vendors@dhobiwala.in immediately if emergency.</div>
+      </div>
+    </div>
+  </div>
+  <div class="bnav">
+    <div class="bnav-item" onclick="go('pgDash')"><div class="bnav-ico">📋</div><div class="bnav-lbl">Orders</div></div>
+    <div class="bnav-item" onclick="go('pgAnalytics')"><div class="bnav-ico">📊</div><div class="bnav-lbl">Analytics</div></div>
+    <div class="bnav-item on"><div class="bnav-ico">💬</div><div class="bnav-lbl">Support</div></div>
+    <div class="bnav-item" onclick="go('pgProfile')"><div class="bnav-ico">👤</div><div class="bnav-lbl">Profile</div></div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="page" id="pgProfile">
+  <div class="profile-hero">
+    <div class="back-row" onclick="go('pgDash')" style="cursor:pointer;padding-bottom:16px;display:flex"><div style="color:rgba(255,255,255,0.4)">←</div></div>
+    <div class="prof-ava" id="profAva">A</div>
+    <div class="prof-name" id="profName">Owner</div>
+    <div class="prof-phone" id="profPhone">+91 XXXXXXXXXX</div>
+  </div>
+  <div class="pmenu">
+    <div class="pmenu-item" style="justify-content:space-between">
+      <div><div style="font-size:0.7rem;color:var(--slate);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Shop Name</div><div style="font-weight:700;color:var(--ink)" id="profShop">—</div></div>
+    </div>
+    <div class="pmenu-item" style="justify-content:space-between">
+      <div><div style="font-size:0.7rem;color:var(--slate);margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Area</div><div style="font-weight:700;color:var(--ink)" id="profArea">—</div></div>
+    </div>
+    <div class="pmenu-item" onclick="go('pgAnalytics')"><div class="pi-ico">📊</div><div class="pi-lbl">My Analytics</div><div class="pi-arr">›</div></div>
+    <div class="pmenu-item" onclick="go('pgSupport')"><div class="pi-ico">💬</div><div class="pi-lbl">Help & Support</div><div class="pi-arr">›</div></div>
+    <div class="pmenu-item danger" onclick="doLogout()"><div class="pi-ico">🚪</div><div class="pi-lbl">Logout</div><div class="pi-arr">›</div></div>
+  </div>
+  <div class="bnav">
+    <div class="bnav-item" onclick="go('pgDash')"><div class="bnav-ico">📋</div><div class="bnav-lbl">Orders</div></div>
+    <div class="bnav-item" onclick="go('pgAnalytics')"><div class="bnav-ico">📊</div><div class="bnav-lbl">Analytics</div></div>
+    <div class="bnav-item" onclick="go('pgSupport')"><div class="bnav-ico">💬</div><div class="bnav-lbl">Support</div></div>
+    <div class="bnav-item on"><div class="bnav-ico">👤</div><div class="bnav-lbl">Profile</div></div>
+  </div>
+</div>
+
+<!-- REJECT MODAL -->
+<div class="modal-bg" id="rejectModal">
+  <div class="modal-box">
+    <div class="modal-title">❌ Reject Order</div>
+    <div class="modal-sub">Please give a reason for rejecting this order</div>
+    <textarea class="rating-ta" id="rejectReason" placeholder="e.g. Shop is full, try tomorrow..." style="height:90px;margin-bottom:12px"></textarea>
+    <button class="modal-submit" style="background:var(--red)" onclick="confirmReject()">Reject Order</button>
+    <button class="modal-cancel" onclick="closeModal('rejectModal')">Cancel</button>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"></div>
+
+<script>
+// ─── CONFIG ──────────────────────────────────────
+var API = 'https://dhobiwala-backend.onrender.com';
+var currentFilter = 'new', currentOrderId = null, shopOpen = true;
+var allOrders = [], shopData = null, vendorData = null;
+var orderTimers = {}, TIMER_MAX = 15 * 60;
+
+// ─── SESSION ─────────────────────────────────────
+function getToken()      { return localStorage.getItem('dw_vendor_token'); }
+function saveToken(t)    { localStorage.setItem('dw_vendor_token', t); }
+function getVendorData() { try { return JSON.parse(localStorage.getItem('dw_vendor_data') || 'null'); } catch(e) { return null; } }
+function saveVendorData(v){ localStorage.setItem('dw_vendor_data', JSON.stringify(v)); }
+
+// ─── NAVIGATION ──────────────────────────────────
+function go(pgId) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('show'); });
+  document.getElementById(pgId).classList.add('show');
+  window.scrollTo(0, 0);
+  if (pgId === 'pgDash')      loadOrders();
+  if (pgId === 'pgAnalytics') renderAnalytics();
+}
+
+// ─── AUTH HELPERS ────────────────────────────────
+function showTab(t) {
+  document.getElementById('tbLogin').className = 'tab-btn' + (t === 'login' ? ' active' : '');
+  document.getElementById('tbReg').className   = 'tab-btn' + (t === 'reg'   ? ' active' : '');
+  document.getElementById('fmLogin').className = 'form-wrap' + (t === 'login' ? ' show' : '');
+  document.getElementById('fmReg').className   = 'form-wrap' + (t === 'reg'   ? ' show' : '');
+  document.getElementById('authErr').style.display = 'none';
+}
+function showErr(m) { var e = document.getElementById('authErr'); e.textContent = m; e.style.display = 'block'; }
+function toggleEye(id, btn) {
+  var i = document.getElementById(id);
+  if (i.type === 'password') { i.type = 'text'; btn.textContent = '🙈'; }
+  else { i.type = 'password'; btn.textContent = '👁'; }
+}
+
+// ─── LOGIN — real API ─────────────────────────────
+function doLogin() {
+  var ph = document.getElementById('lPhone').value.trim();
+  var pw = document.getElementById('lPass').value.trim();
+  if (!ph || !pw) { showErr('Please enter phone and password'); return; }
+  var btn = document.getElementById('btnLogin');
+  btn.disabled = true; btn.textContent = 'Logging in…';
+  fetch(API + '/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: ph, password: pw })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    btn.disabled = false; btn.textContent = 'Login to Dashboard →';
+    if (!data.success) { showErr(data.message || 'Login failed'); return; }
+    saveToken(data.token);
+    var userData = data.vendor || data.user;
+    saveVendorData(userData);
+    loginVendor(userData, data.shop || null);
+  })
+  .catch(function() { btn.disabled = false; btn.textContent = 'Login to Dashboard →'; showErr('Network error. Check connection.'); });
+}
+
+// ─── REGISTER — real API (creates user + shop) ────
+function doRegister() {
+  var shop     = document.getElementById('rShop').value.trim();
+  var owner    = document.getElementById('rOwner').value.trim();
+  var ph       = document.getElementById('rPhone').value.trim();
+  var area     = document.getElementById('rArea').value.trim();
+  var address  = document.getElementById('rAddress').value.trim();
+  var pincode  = document.getElementById('rPincode').value.trim();
+  var shopPhone= document.getElementById('rShopPhone').value.trim();
+  var pw       = document.getElementById('rPass').value.trim();
+  if (!shop||!owner||!ph||!area||!address||!pincode||!shopPhone||!pw) { showErr('Please fill all fields'); return; }
+  if (ph.length !== 10)      { showErr('Enter valid 10-digit phone'); return; }
+  if (pincode.length !== 6)  { showErr('Enter valid 6-digit pincode'); return; }
+  if (shopPhone.length !== 10){ showErr('Enter valid 10-digit shop phone'); return; }
+  if (pw.length < 4)         { showErr('Password must be at least 4 characters'); return; }
+  // Save reg data for UI fallback
+  localStorage.setItem('dw_vendor_reg', JSON.stringify({shopName:shop, ownerName:owner, phone:ph, area:area}));
+  var btn = document.getElementById('btnReg');
+  btn.disabled = true; btn.textContent = 'Registering…';
+
+  // Step 1: Register the vendor user account
+  fetch(API + '/api/auth/register', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: owner, phone: ph, email: ph, password: pw, role: 'vendor' })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    if (!data.success) { btn.disabled = false; btn.textContent = 'Register My Shop →'; showErr(data.message || 'Registration failed'); return; }
+    var token = data.token;
+    saveToken(token);
+    saveVendorData(data.user);
+
+    // Step 2: Create the shop
+    return fetch(API + '/api/shops', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ name: shop, area: area, address: address, pincode: pincode, phone: shopPhone, city: 'Rourkela', openTime: '08:00', closeTime: '21:00', isApproved: true, isOpen: true, tags: ['Shirts', 'Trousers', 'Sarees'], services: [
+        { name: 'Shirt', price: 15, ico: '👔' },
+        { name: 'Trouser', price: 20, ico: '👖' },
+        { name: 'Saree', price: 40, ico: '🥻' },
+        { name: 'Kurta', price: 20, ico: '🧥' },
+        { name: 'Suit (2pc)', price: 80, ico: '🤵' },
+        { name: 'Bedsheet', price: 35, ico: '🛏' }
+      ]})
+    });
+  })
+  .then(function(r) { if (r) return r.json(); })
+  .then(function(shopRes) {
+    btn.disabled = false; btn.textContent = 'Register My Shop →';
+    var v = getVendorData();
+    if (shopRes && shopRes.success) {
+      shopData = shopRes.shop;
+      toast('✅ Shop registered successfully!');
+    } else {
+      toast('Account created! Completing setup...');
+    }
+    loginVendor(v, shopData);
+  })
+  .catch(function() { btn.disabled = false; btn.textContent = 'Register My Shop →'; showErr('Network error. Check connection.'); });
+}
+
+// ─── LOGIN VENDOR (set UI) ────────────────────────
+function loginVendor(v, shop) {
+  vendorData = v;
+  shopData   = shop;
+  var h = new Date().getHours();
+  var g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+  // Try to get registration data from localStorage as fallback
+  var regData = JSON.parse(localStorage.getItem('dw_vendor_reg') || 'null');
+  var shopName  = (shop && shop.name)  || (regData && regData.shopName)  || (v && v.shopName)  || 'Your Shop';
+  var ownerName = (v && (v.name || v.ownerName)) || (regData && regData.ownerName) || 'Owner';
+  var area      = (shop && shop.area)  || (regData && regData.area)      || (v && v.area)      || 'Rourkela';
+  var phone     = (v && v.phone) || (regData && regData.phone) || '';
+
+  document.getElementById('dashShopName').textContent = shopName;
+  document.getElementById('dashWelcome').textContent  = g + ', ' + ownerName.split(' ')[0] + '! 👋';
+  document.getElementById('profAva').textContent      = ownerName[0].toUpperCase();
+  document.getElementById('profName').textContent     = ownerName;
+  document.getElementById('profPhone').textContent    = '+91 ' + phone;
+  document.getElementById('profShop').textContent     = shopName;
+  document.getElementById('profArea').textContent     = area;
+  document.getElementById('anaShopName').textContent  = shopName;
+
+  if (shop && shop.openTime) document.getElementById('openTime').value  = shop.openTime;
+  if (shop && shop.closeTime) document.getElementById('closeTime').value = shop.closeTime;
+
+  go('pgDash');
+}
+
+function doLogout() {
+  localStorage.removeItem('dw_vendor_token');
+  localStorage.removeItem('dw_vendor_data');
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('show'); });
+  document.getElementById('pgAuth').classList.add('show');
+}
+
+// ─── SHOP TOGGLE ─────────────────────────────────
+function toggleShop() {
+  shopOpen = !shopOpen;
+  document.getElementById('shopToggle').classList.toggle('on', shopOpen);
+  document.getElementById('siDot').className = 'si-dot' + (shopOpen ? ' open' : '');
+  document.getElementById('siText').textContent = shopOpen ? 'Your shop is OPEN — accepting orders' : 'Your shop is CLOSED — not accepting orders';
+  document.getElementById('headerIco').textContent = shopOpen ? '🟢' : '🔴';
+  toast(shopOpen ? '🟢 Shop is now OPEN' : '🔴 Shop is now CLOSED');
+
+  // Update shop status in backend if we have shopData
+  if (shopData && shopData._id) {
+    var token = getToken();
+    fetch(API + '/api/shops/' + shopData._id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ isOpen: shopOpen })
+    }).catch(function(){});
+  }
+}
+
+function saveHours() {
+  var open  = document.getElementById('openTime').value;
+  var close = document.getElementById('closeTime').value;
+  if (shopData && shopData._id) {
+    var token = getToken();
+    fetch(API + '/api/shops/' + shopData._id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ openTime: open, closeTime: close })
+    }).catch(function(){});
+  }
+  var c = document.getElementById('hoursSaved');
+  c.style.display = 'block';
+  setTimeout(function(){ c.style.display = 'none'; }, 2000);
+}
+
+// ─── LOAD ORDERS — real API ───────────────────────
+function loadOrders() {
+  var token = getToken();
+  document.getElementById('ordersWrap').innerHTML = '<div class="empty-state"><div class="ico">🔄</div><div>Loading orders...</div></div>';
+
+  // First get my shop if we don't have it
+  var shopPromise = shopData
+    ? Promise.resolve({ success: true, shop: shopData })
+    : fetch(API + '/api/shops/my/shop', { headers: { 'Authorization': 'Bearer ' + token } }).then(function(r){ return r.json(); });
+
+  shopPromise.then(function(sd) {
+    if (sd.success && sd.shop) {
+      shopData = sd.shop;
+      // Update UI with real shop data
+      document.getElementById('dashShopName').textContent = sd.shop.name;
+      document.getElementById('profShop').textContent = sd.shop.name;
+      document.getElementById('profArea').textContent  = sd.shop.area || 'Rourkela';
+    }
+    // Now fetch orders for this shop
+    return fetch(API + '/api/orders?shopId=' + (shopData && shopData._id ? shopData._id : ''), {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(data) {
+    allOrders = (data.success && data.orders) ? data.orders : [];
+    renderOrders();
+  })
+  .catch(function() {
+    allOrders = [];
+    renderOrders();
+  });
+}
+
+// ─── FILTER & RENDER ORDERS ──────────────────────
+function filterOrders(f) {
+  currentFilter = f;
+  ['new','active','done'].forEach(function(t) {
+    var el = document.getElementById('ot-' + t);
+    if (el) el.className = 'otab' + (f === t ? ' on' : '');
+  });
+  renderOrders();
+}
+
+function getFiltered() {
+  if (currentFilter === 'new')    return allOrders.filter(function(o){ return o.status === 'placed' || o.status === 'pending_vendor'; });
+  if (currentFilter === 'active') return allOrders.filter(function(o){ return ['accepted','ironing','ready','out_for_delivery'].includes(o.status); });
+  if (currentFilter === 'done')   return allOrders.filter(function(o){ return ['delivered','rejected'].includes(o.status); });
+  return allOrders;
+}
+
+function statusBadge(s) {
+  var map = { placed:['ob-pend','⏳ New'], pending_vendor:['ob-pend','⏳ New'], accepted:['ob-accept','✅ Accepted'], ironing:['ob-iron','♨️ Ironing'], ready:['ob-ready','📦 Ready'], out_for_delivery:['ob-ready','🚀 Delivering'], delivered:['ob-done','🎉 Delivered'], rejected:['ob-reject','❌ Rejected'] };
+  var r = map[s] || ['ob-pend', s];
+  return '<span class="obadge ' + r[0] + '">' + r[1] + '</span>';
+}
+
+function renderOrders() {
+  var pending  = allOrders.filter(function(o){ return o.status === 'placed' || o.status === 'pending_vendor'; }).length;
+  var today    = allOrders.filter(function(o){ return ['accepted','ironing','ready','out_for_delivery','delivered'].includes(o.status); }).length;
+  var earned   = allOrders.filter(function(o){ return o.status === 'delivered'; }).reduce(function(a,o){ return a + (o.total || 0); }, 0);
+  document.getElementById('stPending').textContent = pending;
+  document.getElementById('stToday').textContent   = today;
+  document.getElementById('stEarn').textContent    = '₹' + earned;
+  document.getElementById('notifDot').textContent  = pending;
+
+  var filtered = getFiltered();
+  if (!filtered.length) {
+    var msgs = { new: ['🎉', 'No new orders right now', 'New orders appear here instantly'], active: ['📭', 'No active orders', 'Check other tabs'], done: ['✅', 'No completed orders yet', 'Completed orders appear here'] };
+    var m = msgs[currentFilter] || ['📭', 'No orders', ''];
+    document.getElementById('ordersWrap').innerHTML = '<div class="empty-state"><div class="ico">' + m[0] + '</div><div style="font-weight:700;color:var(--ink);margin-bottom:6px">' + m[1] + '</div><div style="font-size:0.82rem">' + m[2] + '</div></div>';
+    return;
+  }
+
+  document.getElementById('ordersWrap').innerHTML = filtered.map(function(o) {
+    var dispId   = 'DW' + (o._id || '').slice(-6).toUpperCase();
+    var itemsTxt = (o.items || []).map(function(i){ return (i.quantity||i.qty) + '× ' + (i.label||i.name); }).join(', ');
+    var dateStr  = o.createdAt ? new Date(o.createdAt).toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'}) : '';
+    var custName = (o.customer && o.customer.name) || 'Customer';
+    var custPhone = (o.customer && o.customer.phone) || '';
+
+    var timerHtml = (o.status === 'pending_vendor' || o.status === 'placed')
+      ? '<div style="background:#fef9ec;border:1px solid #fde68a;border-radius:10px;padding:10px 12px;margin-bottom:10px">'
+        + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">'
+        + '<div style="font-size:0.72rem;font-weight:700;color:#d97706">⏳ Time to accept</div>'
+        + '<div style="font-family:Syne,sans-serif;font-weight:800;font-size:1rem;color:#d97706" id="otimer_' + o._id + '">15:00</div>'
+        + '</div><div style="height:4px;background:#fde68a;border-radius:2px;overflow:hidden">'
+        + '<div id="ofill_' + o._id + '" style="height:100%;background:#f59e0b;width:100%;transition:width 1s linear"></div></div></div>'
+      : '';
+
+    var actionHtml = '';
+    if (o.status === 'placed' || o.status === 'pending_vendor') {
+      actionHtml = '<div class="action-row">'
+        + '<button class="act-btn act-accept" onclick="acceptOrder(\'' + o._id + '\')">✅ Accept</button>'
+        + '<button class="act-btn act-reject" onclick="openRejectModal(\'' + o._id + '\')">❌ Reject</button>'
+        + '</div>';
+    } else if (o.status === 'accepted') {
+      actionHtml = '<button class="act-btn act-update" style="margin-top:10px;width:100%" onclick="updateStatus(\'' + o._id + '\',\'ironing\')">♨️ Start Ironing →</button>';
+    } else if (o.status === 'ironing') {
+      actionHtml = '<button class="act-btn act-ready" style="margin-top:10px;width:100%" onclick="updateStatus(\'' + o._id + '\',\'ready\')">✅ Mark Ready for Delivery →</button>';
+    } else if (o.status === 'ready') {
+      actionHtml = '<button class="act-btn act-update" style="margin-top:10px;width:100%" onclick="updateStatus(\'' + o._id + '\',\'out_for_delivery\')">🚀 Handed to Rider</button>';
+    }
+
+    return '<div class="ocard">'
+      + '<div class="ocard-top"><div>'
+      + '<div class="onum">#' + dispId + ' · ' + dateStr + '</div>'
+      + '<div class="ocust">' + custName + '</div>'
+      + (custPhone ? '<div class="ophone">📞 +91 ' + custPhone + '</div>' : '')
+      + '</div>' + statusBadge(o.status) + '</div>'
+      + timerHtml
+      + '<div class="odetail-row">🧺 ' + itemsTxt + '</div>'
+      + '<div class="odetail-row">📍 ' + (o.pickupAddress || o.address || '') + '</div>'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0">'
+      + '<div class="oamt">₹' + (o.totalAmount||o.total || 0) + '</div>'
+      + '<div class="otime-pill">⏰ ' + (o.pickupSlot || o.slot || '') + '</div>'
+      + '</div>'
+      + actionHtml
+      + '</div>';
+  }).join('');
+
+  // Start timers for pending orders
+  filtered.filter(function(o){ return o.status === 'pending_vendor'; }).forEach(function(o){ startTimer(o._id); });
+}
+
+// ─── ORDER ACTIONS — real API ─────────────────────
+function acceptOrder(id) {
+  var token = getToken();
+  fetch(API + '/api/orders/' + id + '/status', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ status: 'accepted', note: 'Vendor accepted the order' })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (!data.success) { toast(data.message || 'Failed to accept'); return; }
+    if (orderTimers[id]) { clearInterval(orderTimers[id].interval); delete orderTimers[id]; }
+    var o = allOrders.find(function(x){ return x._id === id; });
+    if (o) o.status = 'accepted';
+    renderOrders();
+    toast('✅ Order accepted!');
+    setTimeout(function(){ filterOrders('active'); }, 1000);
+  })
+  .catch(function(){ toast('Network error. Try again.'); });
+}
+
+function openRejectModal(id) {
+  currentOrderId = id;
+  document.getElementById('rejectReason').value = '';
+  document.getElementById('rejectModal').classList.add('open');
+}
+
+function confirmReject() {
+  var reason = document.getElementById('rejectReason').value.trim();
+  var token  = getToken();
+  fetch(API + '/api/orders/' + currentOrderId + '/status', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ status: 'rejected', reason: reason })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    closeModal('rejectModal');
+    if (data.success) {
+      if (orderTimers[currentOrderId]) { clearInterval(orderTimers[currentOrderId].interval); delete orderTimers[currentOrderId]; }
+      var o = allOrders.find(function(x){ return x._id === currentOrderId; });
+      if (o) o.status = 'rejected';
+      renderOrders();
+      toast('Order rejected.');
+    } else { toast(data.message || 'Failed to reject'); }
+  })
+  .catch(function(){ closeModal('rejectModal'); toast('Network error. Try again.'); });
+}
+
+function updateStatus(id, status) {
+  var token = getToken();
+  var endpointMap = { ironing:'ironing', ready:'ready', out_for_delivery:'out_for_delivery' };
+  fetch(API + '/api/orders/' + id + '/status', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+    body: JSON.stringify({ status: status })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(data) {
+    if (!data.success) { toast(data.message || 'Update failed'); return; }
+    var o = allOrders.find(function(x){ return x._id === id; });
+    if (o) o.status = status;
+    renderOrders();
+    toast('✅ Status updated!');
+  })
+  .catch(function(){ toast('Network error. Try again.'); });
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// ─── ORDER TIMERS ─────────────────────────────────
+function startTimer(orderId) {
+  if (orderTimers[orderId]) return;
+  orderTimers[orderId] = { secs: TIMER_MAX };
+  orderTimers[orderId].interval = setInterval(function() {
+    orderTimers[orderId].secs--;
+    var s   = orderTimers[orderId].secs;
+    var el  = document.getElementById('otimer_' + orderId);
+    var fill= document.getElementById('ofill_'  + orderId);
+    if (el) {
+      var m = Math.floor(s/60), sec = s%60;
+      el.textContent  = ('0'+m).slice(-2) + ':' + ('0'+sec).slice(-2);
+      el.style.color  = s <= 120 ? '#dc2626' : '#d97706';
+    }
+    if (fill) { fill.style.width = ((s/TIMER_MAX)*100) + '%'; fill.style.background = s <= 120 ? '#dc2626' : '#f59e0b'; }
+    if (s <= 0) {
+      clearInterval(orderTimers[orderId].interval);
+      delete orderTimers[orderId];
+      // Auto-reject via API
+      var token = getToken();
+      fetch(API + '/api/orders/' + orderId + '/status', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify({ status: 'rejected', reason: 'Auto-rejected: vendor did not respond in 15 minutes' })
+      }).then(function(){ loadOrders(); });
+      toast('⏰ Order auto-rejected — timeout');
+    }
+  }, 1000);
+}
+
+// ─── ANALYTICS ───────────────────────────────────
+function renderAnalytics() {
+  var delivered = allOrders.filter(function(o){ return o.status === 'delivered'; });
+  var earned    = delivered.reduce(function(a,o){ return a + (o.total||0); }, 0);
+  document.getElementById('anaEarn').textContent   = '₹' + earned;
+  document.getElementById('anaOrders').textContent = delivered.length + ' orders completed';
+  document.getElementById('anaToday').textContent  = '₹0';
+  document.getElementById('anaWeek').textContent   = '₹' + earned;
+  document.getElementById('anaRating').textContent = '—';
+  var vals = [0,0,0,0,0,0,0], max = 1;
+  document.getElementById('barChart').innerHTML = vals.map(function(v){
+    return '<div class="bar-wrap"><div class="bar-val">' + v + '</div><div class="bar" style="height:' + (v/max*64) + 'px"></div></div>';
+  }).join('');
+}
+
+// ─── TOAST ───────────────────────────────────────
+function toast(msg) {
+  var el = document.getElementById('toastEl');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 2600);
+}
+
+// ─── BOOT ────────────────────────────────────────
+(function() {
+  var token = getToken();
+  var v     = getVendorData();
+  if (token && v) {
+    loginVendor(v, null); // shop data will be fetched in loadOrders
+  }
+})();
+</script>
+</body>
+</html>
