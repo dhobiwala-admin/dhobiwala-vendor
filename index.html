@@ -391,18 +391,19 @@ function doLogin() {
   if (!ph || !pw) { showErr('Please enter phone and password'); return; }
   var btn = document.getElementById('btnLogin');
   btn.disabled = true; btn.textContent = 'Logging in…';
-  fetch(API + '/api/auth/vendor/login', {
+  fetch(API + '/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ phone: ph, password: pw })
+    body: JSON.stringify({ email: ph, password: pw })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
     btn.disabled = false; btn.textContent = 'Login to Dashboard →';
     if (!data.success) { showErr(data.message || 'Login failed'); return; }
     saveToken(data.token);
-    saveVendorData(data.vendor || data.user);
-    loginVendor(data.vendor || data.user, data.shop);
+    var userData = data.vendor || data.user;
+    saveVendorData(userData);
+    loginVendor(userData, data.shop || null);
   })
   .catch(function() { btn.disabled = false; btn.textContent = 'Login to Dashboard →'; showErr('Network error. Check connection.'); });
 }
@@ -422,14 +423,16 @@ function doRegister() {
   if (pincode.length !== 6)  { showErr('Enter valid 6-digit pincode'); return; }
   if (shopPhone.length !== 10){ showErr('Enter valid 10-digit shop phone'); return; }
   if (pw.length < 4)         { showErr('Password must be at least 4 characters'); return; }
+  // Save reg data for UI fallback
+  localStorage.setItem('dw_vendor_reg', JSON.stringify({shopName:shop, ownerName:owner, phone:ph, area:area}));
   var btn = document.getElementById('btnReg');
   btn.disabled = true; btn.textContent = 'Registering…';
 
   // Step 1: Register the vendor user account
-  fetch(API + '/api/auth/vendor/register', {
+  fetch(API + '/api/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: owner, phone: ph, password: pw, role: 'vendor' })
+    body: JSON.stringify({ name: owner, phone: ph, email: ph, password: pw, role: 'vendor' })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
@@ -455,9 +458,14 @@ function doRegister() {
   .then(function(r) { if (r) return r.json(); })
   .then(function(shopRes) {
     btn.disabled = false; btn.textContent = 'Register My Shop →';
-    if (!shopRes || !shopRes.success) { toast('Account created! Shop setup may need attention.'); }
     var v = getVendorData();
-    loginVendor(v, shopRes ? shopRes.shop : null);
+    if (shopRes && shopRes.success) {
+      shopData = shopRes.shop;
+      toast('✅ Shop registered successfully!');
+    } else {
+      toast('Account created! Completing setup...');
+    }
+    loginVendor(v, shopData);
   })
   .catch(function() { btn.disabled = false; btn.textContent = 'Register My Shop →'; showErr('Network error. Check connection.'); });
 }
@@ -468,15 +476,18 @@ function loginVendor(v, shop) {
   shopData   = shop;
   var h = new Date().getHours();
   var g = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-  var shopName = (shop && shop.name) || (v && v.shopName) || 'Your Shop';
-  var ownerName = (v && (v.name || v.ownerName)) || 'Owner';
-  var area = (shop && shop.area) || (v && v.area) || 'Rourkela';
+  // Try to get registration data from localStorage as fallback
+  var regData = JSON.parse(localStorage.getItem('dw_vendor_reg') || 'null');
+  var shopName  = (shop && shop.name)  || (regData && regData.shopName)  || (v && v.shopName)  || 'Your Shop';
+  var ownerName = (v && (v.name || v.ownerName)) || (regData && regData.ownerName) || 'Owner';
+  var area      = (shop && shop.area)  || (regData && regData.area)      || (v && v.area)      || 'Rourkela';
+  var phone     = (v && v.phone) || (regData && regData.phone) || '';
 
   document.getElementById('dashShopName').textContent = shopName;
   document.getElementById('dashWelcome').textContent  = g + ', ' + ownerName.split(' ')[0] + '! 👋';
   document.getElementById('profAva').textContent      = ownerName[0].toUpperCase();
   document.getElementById('profName').textContent     = ownerName;
-  document.getElementById('profPhone').textContent    = '+91 ' + (v && v.phone || '');
+  document.getElementById('profPhone').textContent    = '+91 ' + phone;
   document.getElementById('profShop').textContent     = shopName;
   document.getElementById('profArea').textContent     = area;
   document.getElementById('anaShopName').textContent  = shopName;
