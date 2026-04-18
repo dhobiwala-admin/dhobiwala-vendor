@@ -409,11 +409,14 @@ function go(pgId) {
 
 // ─── AUTH HELPERS ────────────────────────────────
 function showTab(t) {
-  document.getElementById('tbLogin').className = 'tab-btn' + (t === 'login' ? ' active' : '');
-  document.getElementById('tbReg').className   = 'tab-btn' + (t === 'reg'   ? ' active' : '');
-  document.getElementById('fmLogin').className = 'form-wrap' + (t === 'login' ? ' show' : '');
-  document.getElementById('fmReg').className   = 'form-wrap' + (t === 'reg'   ? ' show' : '');
+  document.getElementById('tbLogin').className  = 'tab-btn' + (t === 'login' ? ' active' : '');
+  document.getElementById('tbReg').className    = 'tab-btn' + (t === 'reg'   ? ' active' : '');
+  document.getElementById('fmLogin').className  = 'form-wrap' + (t === 'login' ? ' show' : '');
+  document.getElementById('fmReg').className    = 'form-wrap' + (t === 'reg'   ? ' show' : '');
+  document.getElementById('fmStep2').className  = 'form-wrap'; // always hide step2 on tab switch
   document.getElementById('authErr').style.display = 'none';
+  // Reset service selections when switching to register tab
+  if (t === 'reg') { selectedServices = {}; }
 }
 function showErr(m) { var e = document.getElementById('authErr'); e.textContent = m; e.style.display = 'block'; }
 function toggleEye(id, btn) {
@@ -854,6 +857,7 @@ var selectedServices = {}; // {id: price}
 function showFormStep(step) {
   document.getElementById('fmReg').className    = 'form-wrap' + (step === 1 ? ' show' : '');
   document.getElementById('fmStep2').className  = 'form-wrap' + (step === 2 ? ' show' : '');
+  document.getElementById('authErr').style.display = 'none';
 }
 
 function goToStep2() {
