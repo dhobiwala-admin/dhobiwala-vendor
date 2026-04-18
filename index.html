@@ -446,12 +446,12 @@ function doRegister() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
       body: JSON.stringify({ name: shop, area: area, address: address, pincode: pincode, phone: shopPhone, city: 'Rourkela', openTime: '08:00', closeTime: '21:00', isApproved: true, isOpen: true, tags: ['Shirts', 'Trousers', 'Sarees'], services: [
-        { name: 'Shirt', price: 15, ico: '👔' },
-        { name: 'Trouser', price: 20, ico: '👖' },
-        { name: 'Saree', price: 40, ico: '🥻' },
-        { name: 'Kurta', price: 20, ico: '🧥' },
-        { name: 'Suit (2pc)', price: 80, ico: '🤵' },
-        { name: 'Bedsheet', price: 35, ico: '🛏' }
+        { id: 'shirt',   label: 'Shirt',      icon: '👔', price: 15, isAvailable: true },
+        { id: 'trouser', label: 'Trouser',     icon: '👖', price: 20, isAvailable: true },
+        { id: 'saree',   label: 'Saree',       icon: '🥻', price: 40, isAvailable: true },
+        { id: 'kurta',   label: 'Kurta',       icon: '🧥', price: 20, isAvailable: true },
+        { id: 'suit',    label: 'Suit (2pc)',  icon: '🤵', price: 80, isAvailable: true },
+        { id: 'bed',     label: 'Bedsheet',    icon: '🛏', price: 35, isAvailable: true }
       ]})
     });
   })
