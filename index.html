@@ -391,6 +391,7 @@ var API = 'https://dhobiwala-backend.onrender.com';
 var currentFilter = 'new', currentOrderId = null, shopOpen = true;
 var allOrders = [], shopData = null, vendorData = null;
 var orderTimers = {}, TIMER_MAX = 15 * 60;
+var selectedServices = {}; // service selection for registration
 
 // ─── SESSION ─────────────────────────────────────
 function getToken()      { return localStorage.getItem('dw_vendor_token'); }
@@ -416,7 +417,7 @@ function showTab(t) {
   document.getElementById('fmStep2').className  = 'form-wrap'; // always hide step2 on tab switch
   document.getElementById('authErr').style.display = 'none';
   // Reset service selections when switching to register tab
-  if (t === 'reg') { selectedServices = {}; }
+  if (t === 'reg') { selectedServices = {}; renderServicesList && renderServicesList(); }
 }
 function showErr(m) { var e = document.getElementById('authErr'); e.textContent = m; e.style.display = 'block'; }
 function toggleEye(id, btn) {
@@ -852,7 +853,6 @@ var ALL_SERVICES = [
   { id: 'towel',    label: 'Towel',           icon: 'towel',   price: 10, hint: 'Bath towel, hand towel' },
 ];
 
-var selectedServices = {}; // {id: price}
 
 function showFormStep(step) {
   document.getElementById('fmReg').className    = 'form-wrap' + (step === 1 ? ' show' : '');
