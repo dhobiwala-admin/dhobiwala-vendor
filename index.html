@@ -131,6 +131,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
 .sb-ico{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0}
 .sb-lbl{font-weight:600;color:var(--ink);font-size:0.85rem}
 .sb-val{font-size:0.72rem;color:var(--slate);margin-top:1px}
+.svc-select-card{background:var(--white);border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:border-color 0.2s}
+.svc-select-card.picked{border-color:var(--gold);background:#fffbf0}
+.svc-select-ico{font-size:1.6rem;width:40px;text-align:center;flex-shrink:0}
+.svc-select-info{flex:1}
+.svc-select-name{font-weight:700;color:var(--ink);font-size:0.9rem;margin-bottom:2px}
+.svc-select-hint{font-size:0.72rem;color:var(--slate)}
+.svc-price-inp{width:80px;padding:8px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:0.85rem;font-family:"DM Sans",sans-serif;color:var(--ink);text-align:center;background:var(--white)}
+.svc-price-inp:focus{border-color:var(--gold);outline:none}
+.svc-check{width:22px;height:22px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;transition:all 0.2s}
+.svc-select-card.picked .svc-check{background:var(--gold);border-color:var(--gold);color:var(--ink)}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 22px;border-radius:30px;font-size:0.82rem;font-weight:600;z-index:999;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;max-width:90%}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .empty-state{text-align:center;padding:40px 20px;color:var(--slate)}
@@ -157,8 +167,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
       <button class="cta cta-dark" id="btnLogin" onclick="doLogin()">Login to Dashboard →</button>
       <div class="switch-hint">New vendor? <a onclick="showTab('reg')">Register shop</a></div>
     </div>
+    <!-- STEP 1: Shop Details -->
     <div class="form-wrap" id="fmReg">
-      <div class="field"><label>Shop Name</label><input class="finput" type="text" id="rShop" placeholder="e.g. Civil Iron Palace"/></div>
+      <div style="background:var(--light);border-radius:10px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+        <div style="width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0">1</div>
+        <div style="font-size:0.82rem;font-weight:600;color:var(--ink)">Shop Details <span style="color:var(--slate);font-weight:400">→ Step 2: Your Services</span></div>
+      </div>
+      <div class="field"><label>Shop Name</label><input class="finput" type="text" id="rShop" placeholder="e.g. Maa Tarini Laundry Shop"/></div>
       <div class="field"><label>Owner Name</label><input class="finput" type="text" id="rOwner" placeholder="Your full name"/></div>
       <div class="field"><label>Phone Number</label><input class="finput" type="tel" id="rPhone" placeholder="98765 43210" maxlength="10"/></div>
       <div class="field"><label>Area</label><input class="finput" type="text" id="rArea" placeholder="e.g. Civil Township, Sector 6"/></div>
@@ -166,7 +181,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
       <div class="field"><label>Pincode</label><input class="finput" type="tel" id="rPincode" placeholder="e.g. 769001" maxlength="6"/></div>
       <div class="field"><label>Shop Phone</label><input class="finput" type="tel" id="rShopPhone" placeholder="98765 43210" maxlength="10"/></div>
       <div class="field"><label>Password</label><div class="pass-wrap"><input class="finput" type="password" id="rPass" placeholder="Create password"/><button class="eye-btn" type="button" onclick="toggleEye('rPass',this)">👁</button></div></div>
-      <button class="cta cta-gold" id="btnReg" onclick="doRegister()">Register My Shop →</button>
+      <button class="cta cta-gold" id="btnReg" onclick="goToStep2()">Next: Select Services →</button>
+      <div class="switch-hint">Already registered? <a onclick="showTab('login')">Login</a></div>
+    </div>
+
+    <!-- STEP 2: Service Selection -->
+    <div class="form-wrap" id="fmStep2">
+      <div style="background:var(--light);border-radius:10px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:24px;height:24px;border-radius:50%;background:var(--gold);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0">2</div>
+          <div style="font-size:0.82rem;font-weight:600;color:var(--ink)">Select Your Services</div>
+        </div>
+        <a onclick="showFormStep(1)" style="font-size:0.78rem;color:var(--slate);cursor:pointer">← Back</a>
+      </div>
+      <div style="font-size:0.78rem;color:var(--slate);margin-bottom:14px;line-height:1.5">Select services you offer and set your price. Customers will only see what you select.</div>
+      <div id="servicesList"></div>
+      <div style="background:var(--light);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-size:0.78rem;color:var(--slate)">
+        💡 You can add custom services too:
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input class="finput" type="text" id="customSvcName" placeholder="Service name" style="flex:2;padding:9px 12px;font-size:0.82rem"/>
+          <input class="finput" type="number" id="customSvcPrice" placeholder="₹" style="flex:1;padding:9px 12px;font-size:0.82rem"/>
+          <button onclick="addCustomService()" style="padding:9px 12px;background:var(--ink);color:#fff;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:0.82rem;white-space:nowrap">Add</button>
+        </div>
+      </div>
+      <button class="cta cta-gold" id="btnRegFinal" onclick="doRegister()">Register My Shop 🚀</button>
       <div class="switch-hint">Already registered? <a onclick="showTab('login')">Login</a></div>
     </div>
   </div>
@@ -423,9 +461,13 @@ function doRegister() {
   if (pincode.length !== 6)  { showErr('Enter valid 6-digit pincode'); return; }
   if (shopPhone.length !== 10){ showErr('Enter valid 10-digit shop phone'); return; }
   if (pw.length < 4)         { showErr('Password must be at least 4 characters'); return; }
+  // Validate at least 1 service selected
+  var services = getSelectedServicesArray();
+  if (services.length === 0) { toast('Please select at least 1 service you offer'); return; }
+
   // Save reg data for UI fallback
   localStorage.setItem('dw_vendor_reg', JSON.stringify({shopName:shop, ownerName:owner, phone:ph, area:area}));
-  var btn = document.getElementById('btnReg');
+  var btn = document.getElementById('btnRegFinal');
   btn.disabled = true; btn.textContent = 'Registering…';
 
   // Step 1: Register the vendor user account
@@ -436,7 +478,7 @@ function doRegister() {
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
-    if (!data.success) { btn.disabled = false; btn.textContent = 'Register My Shop →'; showErr(data.message || 'Registration failed'); return; }
+    if (!data.success) { btn.disabled = false; btn.textContent = 'Register My Shop 🚀'; showErr(data.message || 'Registration failed'); return; }
     var token = data.token;
     saveToken(token);
     saveVendorData(data.user);
@@ -445,19 +487,19 @@ function doRegister() {
     return fetch(API + '/api/shops', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-      body: JSON.stringify({ name: shop, area: area, address: address, pincode: pincode, phone: shopPhone, city: 'Rourkela', openTime: '08:00', closeTime: '21:00', isApproved: true, isOpen: true, tags: ['Shirts', 'Trousers', 'Sarees'], services: [
-        { id: 'shirt',   label: 'Shirt',      icon: '👔', price: 15, isAvailable: true },
-        { id: 'trouser', label: 'Trouser',     icon: '👖', price: 20, isAvailable: true },
-        { id: 'saree',   label: 'Saree',       icon: '🥻', price: 40, isAvailable: true },
-        { id: 'kurta',   label: 'Kurta',       icon: '🧥', price: 20, isAvailable: true },
-        { id: 'suit',    label: 'Suit (2pc)',  icon: '🤵', price: 80, isAvailable: true },
-        { id: 'bed',     label: 'Bedsheet',    icon: '🛏', price: 35, isAvailable: true }
-      ]})
+      body: JSON.stringify({
+          name: shop, area: area, address: address, pincode: pincode,
+          phone: shopPhone, city: 'Rourkela',
+          openTime: '08:00', closeTime: '21:00',
+          isApproved: true, isOpen: true,
+          tags: services.map(function(s){ return s.label; }),
+          services: services
+        })
     });
   })
   .then(function(r) { if (r) return r.json(); })
   .then(function(shopRes) {
-    btn.disabled = false; btn.textContent = 'Register My Shop →';
+    btn.disabled = false; btn.textContent = 'Register My Shop 🚀';
     var v = getVendorData();
     if (shopRes && shopRes.success) {
       shopData = shopRes.shop;
@@ -467,7 +509,7 @@ function doRegister() {
     }
     loginVendor(v, shopData);
   })
-  .catch(function() { btn.disabled = false; btn.textContent = 'Register My Shop →'; showErr('Network error. Check connection.'); });
+  .catch(function() { btn.disabled = false; btn.textContent = 'Register My Shop 🚀'; showErr('Network error. Check connection.'); });
 }
 
 // ─── LOGIN VENDOR (set UI) ────────────────────────
@@ -786,6 +828,117 @@ function toast(msg) {
   var el = document.getElementById('toastEl');
   el.textContent = msg; el.classList.add('show');
   setTimeout(function(){ el.classList.remove('show'); }, 2600);
+}
+
+// ─── ALL AVAILABLE SERVICES ──────────────────────
+var ALL_SERVICES = [
+  { id: 'shirt',    label: 'Shirt',         icon: 'shirt',   price: 15, hint: 'Regular shirts, t-shirts' },
+  { id: 'trouser',  label: 'Trouser',        icon: 'trouser', price: 20, hint: 'Pants, trousers, jeans' },
+  { id: 'saree',    label: 'Saree',          icon: 'saree',   price: 40, hint: 'Silk, cotton, georgette sarees' },
+  { id: 'kurta',    label: 'Kurta',          icon: 'kurta',   price: 20, hint: 'Kurta, kurti, salwar kameez' },
+  { id: 'suit2',    label: 'Suit (2pc)',      icon: 'suit',    price: 80, hint: 'Blazer + trouser set' },
+  { id: 'suit3',    label: 'Suit (3pc)',      icon: 'suit',    price: 120, hint: 'Jacket + vest + trouser' },
+  { id: 'lehenga',  label: 'Lehenga',         icon: 'lehenga', price: 100, hint: 'Lehenga skirt + blouse' },
+  { id: 'dupatta',  label: 'Dupatta',         icon: 'dupatta', price: 15, hint: 'Scarf, dupatta, stole' },
+  { id: 'bed',      label: 'Bedsheet',        icon: 'bed',     price: 35, hint: 'Single or double bedsheet' },
+  { id: 'curtain',  label: 'Curtain',         icon: 'curtain', price: 50, hint: 'Window curtains per piece' },
+  { id: 'blazer',   label: 'Blazer',          icon: 'blazer',  price: 60, hint: 'Sports coat, blazer' },
+  { id: 'coat',     label: 'Overcoat',        icon: 'coat',    price: 80, hint: 'Winter coat, jacket' },
+  { id: 'churidar', label: 'Churidar',        icon: 'churidar',price: 15, hint: 'Churidar, leggings' },
+  { id: 'sherwani', label: 'Sherwani',        icon: 'sherwani',price: 150, hint: 'Wedding sherwani' },
+  { id: 'towel',    label: 'Towel',           icon: 'towel',   price: 10, hint: 'Bath towel, hand towel' },
+];
+
+var selectedServices = {}; // {id: price}
+
+function showFormStep(step) {
+  document.getElementById('fmReg').className    = 'form-wrap' + (step === 1 ? ' show' : '');
+  document.getElementById('fmStep2').className  = 'form-wrap' + (step === 2 ? ' show' : '');
+}
+
+function goToStep2() {
+  // Validate step 1 fields first
+  var shop     = document.getElementById('rShop').value.trim();
+  var owner    = document.getElementById('rOwner').value.trim();
+  var ph       = document.getElementById('rPhone').value.trim();
+  var area     = document.getElementById('rArea').value.trim();
+  var address  = document.getElementById('rAddress').value.trim();
+  var pincode  = document.getElementById('rPincode').value.trim();
+  var shopPhone= document.getElementById('rShopPhone').value.trim();
+  var pw       = document.getElementById('rPass').value.trim();
+  if (!shop||!owner||!ph||!area||!address||!pincode||!shopPhone||!pw) { showErr('Please fill all fields'); return; }
+  if (ph.length !== 10)       { showErr('Enter valid 10-digit phone'); return; }
+  if (pincode.length !== 6)   { showErr('Enter valid 6-digit pincode'); return; }
+  if (shopPhone.length !== 10){ showErr('Enter valid 10-digit shop phone'); return; }
+  if (pw.length < 4)          { showErr('Password must be at least 4 characters'); return; }
+  document.getElementById('authErr').style.display = 'none';
+  renderServicesList();
+  showFormStep(2);
+}
+
+function renderServicesList() {
+  var html = ALL_SERVICES.map(function(s) {
+    var picked = selectedServices[s.id] !== undefined;
+    var price  = selectedServices[s.id] || s.price;
+    return '<div class="svc-select-card' + (picked ? ' picked' : '') + '" id="scard_' + s.id + '" onclick="toggleService('' + s.id + '')">'
+      + '<div class="svc-check" id="schk_' + s.id + '">' + (picked ? '✓' : '') + '</div>'
+      + '<div class="svc-select-info">'
+      + '<div class="svc-select-name">' + s.label + '</div>'
+      + '<div class="svc-select-hint">' + s.hint + '</div>'
+      + '</div>'
+      + '<div onclick="event.stopPropagation()" style="display:flex;align-items:center;gap:4px">'
+      + '<span style="font-size:0.78rem;color:var(--slate)">₹</span>'
+      + '<input class="svc-price-inp" type="number" id="sprice_' + s.id + '" value="' + price + '" min="1" onclick="event.stopPropagation()" onchange="updatePrice('' + s.id + '',this.value)"/>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('servicesList').innerHTML = html;
+}
+
+function toggleService(id) {
+  var svc = ALL_SERVICES.find(function(s){ return s.id === id; });
+  if (selectedServices[id] !== undefined) {
+    delete selectedServices[id];
+  } else {
+    var priceEl = document.getElementById('sprice_' + id);
+    selectedServices[id] = priceEl ? parseInt(priceEl.value) || svc.price : svc.price;
+  }
+  var card = document.getElementById('scard_' + id);
+  var chk  = document.getElementById('schk_' + id);
+  if (card) card.className = 'svc-select-card' + (selectedServices[id] !== undefined ? ' picked' : '');
+  if (chk)  chk.textContent = selectedServices[id] !== undefined ? '✓' : '';
+}
+
+function updatePrice(id, val) {
+  if (selectedServices[id] !== undefined) {
+    selectedServices[id] = parseInt(val) || 0;
+  }
+}
+
+function addCustomService() {
+  var name  = document.getElementById('customSvcName').value.trim();
+  var price = parseInt(document.getElementById('customSvcPrice').value) || 0;
+  if (!name || !price) { toast('Enter service name and price'); return; }
+  var id = 'custom_' + name.toLowerCase().replace(/\s+/g, '_');
+  ALL_SERVICES.push({ id: id, label: name, icon: 'custom', price: price, hint: 'Custom service' });
+  selectedServices[id] = price;
+  document.getElementById('customSvcName').value  = '';
+  document.getElementById('customSvcPrice').value = '';
+  renderServicesList();
+  toast('✅ ' + name + ' added!');
+}
+
+function getSelectedServicesArray() {
+  return Object.keys(selectedServices).map(function(id) {
+    var svc = ALL_SERVICES.find(function(s){ return s.id === id; });
+    return {
+      id:    id,
+      label: svc ? svc.label : id,
+      icon:  svc ? svc.icon  : 'custom',
+      price: selectedServices[id],
+      isAvailable: true
+    };
+  });
 }
 
 // ─── BOOT ────────────────────────────────────────
