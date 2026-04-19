@@ -123,6 +123,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);max-width:430px;ma
 .act-accept{background:var(--green);color:#fff}
 .act-reject{background:#fee2e2;color:var(--red);border:1px solid #fecaca}
 .act-update{background:var(--ink);color:#fff;width:100%;margin-top:8px}
+.v-otp-show{background:linear-gradient(135deg,var(--ink),#1a1a2e);border-radius:14px;padding:16px;margin-top:8px;text-align:center;border:1px solid rgba(240,165,0,0.2)}
+.v-otp-lbl{font-size:0.6rem;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:6px}
+.v-otp-code{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:4px}
+.v-otp-hint{font-size:0.68rem;color:rgba(255,255,255,0.35)}
+.v-otp-enter{background:#f9f7f2;border-radius:14px;padding:14px;margin-top:8px;border:1px solid var(--border)}
+.v-otp-enter-lbl{font-size:0.72rem;font-weight:700;color:var(--ink);margin-bottom:8px}
+.v-otp-row{display:flex;gap:7px}
+.v-otp-field{flex:1;padding:12px 8px;border:2px solid var(--border);border-radius:12px;font-size:1.2rem;font-family:'Syne',sans-serif;font-weight:800;text-align:center;outline:none;color:var(--ink);letter-spacing:0.15em}
+.v-otp-field:focus{border-color:var(--gold)}
+.v-otp-btn{padding:12px 14px;background:var(--ink);color:#fff;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.78rem;cursor:pointer}
+.v-otp-btn:disabled{opacity:0.6}
 /* ITEM STATUS in order card */
 .item-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--cream);border-radius:8px;margin-top:6px}
 .item-row-name{font-size:0.78rem;font-weight:600;color:var(--ink)}
@@ -797,7 +808,7 @@ function filterOrders(f) {
 
 function getFiltered() {
   if (currentFilter==='new')    return allOrders.filter(function(o){ return o.status==='placed'||o.status==='pending_vendor'; });
-  if (currentFilter==='active') return allOrders.filter(function(o){ return ['accepted','pickup_scheduled','picked_up','processing','partially_delivered'].indexOf(o.status)>-1; });
+  if (currentFilter==='active') return allOrders.filter(function(o){ return ['accepted','pickup_scheduled','picked_up','at_shop','processing','out_for_delivery','partially_delivered'].indexOf(o.status)>-1; });
   if (currentFilter==='done')   return allOrders.filter(function(o){ return o.status==='delivered'||o.status==='rejected'||o.status==='cancelled'; });
   return allOrders;
 }
@@ -805,12 +816,14 @@ function getFiltered() {
 var STATUS_BADGE = {
   placed:              ['ob-pend',  '⏳ New'],
   pending_vendor:      ['ob-pend',  '⏳ New'],
-  accepted:            ['ob-accept','✅ Accepted — Waiting for rider pickup'],
-  pickup_scheduled:    ['ob-accept','🏍 Rider assigned — Coming to pickup'],
-  picked_up:           ['ob-iron',  '📦 Clothes received — Ready to process'],
+  accepted:            ['ob-accept','✅ Accepted — Rider coming to customer'],
+  pickup_scheduled:    ['ob-accept','🏍 Rider assigned — En route to customer'],
+  picked_up:           ['ob-iron',  '🚚 Rider picked up — Coming to shop'],
+  at_shop:             ['ob-iron',  '🏪 Clothes at shop — Ready to process'],
   processing:          ['ob-iron',  '♨️ Processing'],
-  partially_delivered: ['ob-iron',  '🚀 Partial'],
-  delivered:           ['ob-done',  '🎉 Done'],
+  out_for_delivery:    ['ob-iron',  '🚀 Out for delivery'],
+  partially_delivered: ['ob-iron',  '🚀 Partially delivered'],
+  delivered:           ['ob-done',  '🎉 Delivered'],
   rejected:            ['ob-reject','❌ Rejected'],
   cancelled:           ['ob-reject','🚫 Cancelled']
 };
@@ -818,7 +831,7 @@ var STATUS_BADGE = {
 function renderOrders() {
   var filtered=getFiltered();
   var pending=allOrders.filter(function(o){ return o.status==='placed'||o.status==='pending_vendor'; }).length;
-  var today  =allOrders.filter(function(o){ return ['accepted','pickup_scheduled','picked_up','processing','partially_delivered','delivered'].indexOf(o.status)>-1; }).length;
+  var today  =allOrders.filter(function(o){ return ['accepted','pickup_scheduled','picked_up','at_shop','processing','out_for_delivery','partially_delivered','delivered'].indexOf(o.status)>-1; }).length;
   var earned =allOrders.filter(function(o){ return o.status==='delivered'; }).reduce(function(a,o){ return a+(o.totalAmount||0); },0);
   document.getElementById('stPending').textContent=pending;
   document.getElementById('stToday').textContent=today;
@@ -890,7 +903,7 @@ function renderOrders() {
           +'<div class="item-row-tat">'+tat.badge+' · '+tat.label+'</div>'
           +'</div>';
         // Status button for active orders
-        if (o.status==='picked_up'||o.status==='processing') {
+        if (o.status==='processing') {
           var iBtn = document.createElement('button');
           var ist  = item.itemStatus||'pending';
           var nextStatus = ist==='pending'?'processing':ist==='processing'?'ready':null;
@@ -926,6 +939,50 @@ function renderOrders() {
       card.appendChild(tripInfo);
     }
 
+    // When processing — show progress + when ALL ready, show Collection OTP
+    if (o.status === 'processing') {
+      var readyCount = (o.items||[]).filter(function(i){ return i.itemStatus==='ready'; }).length;
+      var totalCount = (o.items||[]).length;
+      var allItemsReady = totalCount > 0 && readyCount === totalCount;
+
+      if (!allItemsReady) {
+        // Still processing — show progress bar
+        var progDiv = document.createElement('div');
+        progDiv.style.cssText='background:var(--light);border-radius:10px;padding:10px 12px;margin-top:8px;font-size:0.75rem;color:var(--slate)';
+        var progBar = document.createElement('div');
+        progBar.style.cssText='height:4px;background:#e0dbd0;border-radius:2px;margin-top:6px;overflow:hidden';
+        var progFill = document.createElement('div');
+        var pct = totalCount > 0 ? Math.round((readyCount/totalCount)*100) : 0;
+        progFill.style.cssText='height:100%;width:'+pct+'%;background:var(--green);border-radius:2px;transition:width 0.3s';
+        progBar.appendChild(progFill); progDiv.appendChild(progBar);
+        progDiv.insertBefore(Object.assign(document.createElement('div'),{
+          textContent: '♨️ Processing: '+readyCount+'/'+totalCount+' items ready — mark each item ready above'
+        }), progBar);
+        card.appendChild(progDiv);
+      }
+
+      if (allItemsReady) {
+        // ALL items ready — show collection OTP for rider to enter
+        var allReadyBanner = document.createElement('div');
+        allReadyBanner.style.cssText='background:#f0fdf4;border:2px solid #16a34a;border-radius:12px;padding:14px;margin-top:8px;text-align:center';
+        var arTitle = document.createElement('div');
+        arTitle.style.cssText='font-family:Syne,sans-serif;font-weight:800;color:#16a34a;font-size:0.9rem;margin-bottom:4px';
+        arTitle.textContent='✅ All items ready for pickup!';
+        var arSub = document.createElement('div');
+        arSub.style.cssText='font-size:0.72rem;color:#64748b;margin-bottom:12px;line-height:1.5';
+        arSub.textContent='When rider arrives to collect, show them your 4-digit Collection OTP. Rider enters it to confirm collection.';
+        allReadyBanner.appendChild(arTitle); allReadyBanner.appendChild(arSub);
+        card.appendChild(allReadyBanner);
+        // Collection OTP box
+        var collectOtpBox = document.createElement('div'); collectOtpBox.className='v-otp-show'; collectOtpBox.id='vCollectOtpBox_'+o._id;
+        var cl1=document.createElement('div'); cl1.className='v-otp-lbl'; cl1.textContent='Your Collection OTP — Show to Rider'; collectOtpBox.appendChild(cl1);
+        var cc1=document.createElement('div'); cc1.className='v-otp-code'; cc1.id='vCollectCode_'+o._id; cc1.textContent='....'; collectOtpBox.appendChild(cc1);
+        var ch1=document.createElement('div'); ch1.className='v-otp-hint'; ch1.textContent='Rider enters this in their app to confirm collection'; collectOtpBox.appendChild(ch1);
+        card.appendChild(collectOtpBox);
+        fetchVendorCollectOtp(o._id);
+      }
+    }
+
     // Action buttons
     if (isNew) {
       var actRow = document.createElement('div');
@@ -942,18 +999,35 @@ function renderOrders() {
       actRow.appendChild(rejBtn);
       card.appendChild(actRow);
     } else if (o.status==='accepted') {
-      // Waiting for rider to pick up — show info only
       var waitDiv = document.createElement('div');
       waitDiv.style.cssText='background:#fef9ec;border:1px solid #fde68a;border-radius:10px;padding:10px 12px;font-size:0.78rem;color:#d97706;font-weight:600;margin-top:8px;text-align:center';
-      waitDiv.textContent='🏍 Rider assigned — waiting to pick up clothes from customer';
+      waitDiv.textContent='🏍 Rider assigned — going to customer for pickup';
       card.appendChild(waitDiv);
     } else if (o.status==='picked_up') {
-      // Rider has delivered clothes to shop — NOW vendor can start processing
-      var startBtn = document.createElement('button');
-      startBtn.className = 'act-btn act-update';
-      startBtn.textContent = '♨️ Start Processing — Clothes Received!';
-      startBtn.addEventListener('click', function(){ updateStatus(o._id,'processing'); });
-      card.appendChild(startBtn);
+      var waitDiv2 = document.createElement('div');
+      waitDiv2.style.cssText='background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:10px 12px;font-size:0.78rem;color:#1d4ed8;font-weight:600;margin-top:8px;text-align:center';
+      waitDiv2.textContent='🚚 Rider picked up from customer — coming to your shop...';
+      card.appendChild(waitDiv2);
+    } else if (o.status==='at_shop') {
+      // Rider at shop — vendor enters rider's dropOtp to confirm receipt
+      var atShopInfo = document.createElement('div');
+      atShopInfo.style.cssText='background:#eff6ff;border:1px dashed #bfdbfe;border-radius:10px;padding:10px 12px;font-size:0.74rem;color:#1d4ed8;font-weight:600;line-height:1.6;margin-top:8px';
+      atShopInfo.innerHTML='🏍 Rider is at your shop with clothes.<br/>Ask rider for their <strong>4-digit Drop OTP</strong> and enter below to confirm receipt.';
+      card.appendChild(atShopInfo);
+      var dropOtpBox = document.createElement('div');
+      dropOtpBox.className='v-otp-enter';
+      dl1=document.createElement('div'); dl1.className='v-otp-enter-lbl'; dl1.textContent='Enter Rider Drop OTP';
+      var dr1=document.createElement('div'); dr1.className='v-otp-row';
+      var di1=document.createElement('input'); di1.className='v-otp-field'; di1.type='number'; di1.id='vDropOtp_'+o._id; di1.placeholder='0000'; di1.maxLength=4;
+      var db1=document.createElement('button'); db1.className='v-otp-btn'; db1.textContent='Verify';
+      (function(oid){ db1.addEventListener('click',function(){ vendorVerifyOtp('drop',oid); }); })(o._id);
+      dr1.appendChild(di1); dr1.appendChild(db1); dropOtpBox.appendChild(dl1); dropOtpBox.appendChild(dr1);
+      card.appendChild(dropOtpBox);
+    } else if (o.status==='out_for_delivery') {
+      var delivDiv = document.createElement('div');
+      delivDiv.style.cssText='background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:10px 12px;font-size:0.78rem;color:#16a34a;font-weight:600;margin-top:8px;text-align:center';
+      delivDiv.textContent='🚀 Rider is delivering to customer';
+      card.appendChild(delivDiv);
     }
 
     wrap.appendChild(card);
@@ -1041,6 +1115,43 @@ function toast(msg){ var el=document.getElementById('toastEl'); el.textContent=m
   var token=getToken(), cache=getVendorCache();
   if (token&&cache) enterDashboard(cache,null);
 })();
+
+// ─── VENDOR OTP FUNCTIONS ─────────────────────────────────────────────────────
+function vendorVerifyOtp(type, orderId) {
+  var inp = document.getElementById('vDropOtp_' + orderId);
+  var btn = document.getElementById('vDropBtn_' + orderId);
+  if (!inp) return;
+  var otp = inp.value.trim();
+  if (otp.length !== 4) { toast('Enter the 4-digit OTP'); return; }
+  if (btn) { btn.disabled = true; btn.textContent = 'Verifying...'; }
+  fetch(API + '/api/orders/' + orderId + '/verify-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': authHeader().Authorization },
+    body: JSON.stringify({ type: type, otp: otp })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (btn) { btn.disabled = false; btn.textContent = 'Verify'; }
+    if (d.success) {
+      toast('OTP verified! Clothes received. You can now start processing!');
+      setTimeout(function(){ loadOrders(); }, 500);
+    }
+    else { toast(d.message || 'Wrong OTP. Try again.'); }
+  })
+  .catch(function() { if (btn) { btn.disabled = false; btn.textContent = 'Verify'; } toast('Network error.'); });
+}
+
+function fetchVendorCollectOtp(orderId) {
+  fetch(API + '/api/orders/' + orderId + '/otp', { headers: authHeader() })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.success && d.otps && d.otps.collectOtp) {
+      var el = document.getElementById('vCollectCode_' + orderId);
+      if (el) el.textContent = d.otps.collectOtp.code;
+    }
+  }).catch(function() {});
+}
+
 </script>
 </body>
 </html>
